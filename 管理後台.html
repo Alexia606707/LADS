@@ -236,6 +236,26 @@
             .gift-cell input { width:40px; height:34px; font-size:.85em; }
         }
 
+        /* 卡面清單項目 */
+        .card-entry {
+            display:flex; gap:8px; align-items:center; margin-bottom:6px;
+        }
+        .card-entry select, .card-entry input {
+            padding:8px 12px; border-radius:8px; border:1px solid var(--border);
+            background:rgba(255,255,255,.03); color:#b0b8cc; font-size:.95em;
+            outline:none; font-family:inherit;
+        }
+        .card-entry select { -webkit-appearance:none; -moz-appearance:none; appearance:none;
+            padding-right:28px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237c8aaa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 8px center;
+        }
+        .card-entry select option { background:#1a1040; color:#e0e0e0; }
+        .card-entry input { flex:2; }
+        .card-entry .card-del {
+            background:none; border:none; color:var(--red); cursor:pointer; font-size:1.1em;
+            padding:4px 8px; opacity:.5; transition:opacity .2s;
+        }
+        .card-entry .card-del:hover { opacity:1; }
+
         /* 忘記抽的提示 */
         .skip-notice {
             background:rgba(252,165,165,.06); border:1px solid rgba(252,165,165,.1);
@@ -345,12 +365,12 @@
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>卡面清單（每行一張，格式：角色·卡面名）</label>
-                    <textarea id="fCards" rows="3" placeholder="祁煜·霧海離歌&#10;祁煜·霧海神臨"></textarea>
-                </div>
+            <!-- 卡面清單 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                <label style="font-size:.9em;color:var(--dim);letter-spacing:1px">卡面清單</label>
+                <button class="btn btn-accent" onclick="addCard()" style="font-size:.8em;padding:5px 14px">+ 新增卡面</button>
             </div>
+            <div id="cardsList"></div>
 
             <!-- 抽卡狀態：三選一互斥 -->
             <div class="form-row">
@@ -364,11 +384,13 @@
             </div>
             <!-- 出卡紀錄 -->
             <div id="pullsSection">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 10px">
+                <div style="margin:16px 0 10px">
                     <h2 style="margin:0;border:none;padding:0;font-size:1em;color:var(--accent)">出卡紀錄</h2>
-                    <button class="btn btn-accent" onclick="addPull()">+ 新增一筆</button>
                 </div>
                 <div id="pullsList"></div>
+                <div style="text-align:center;margin-top:10px">
+                    <button class="btn btn-accent" onclick="addPull()">+ 新增一筆</button>
+                </div>
             </div>
 
             <!-- 禮包計算 -->
@@ -403,6 +425,21 @@
                             <div class="gift-cell">
                                 <span class="price-tag">390 元</span>
                                 <div class="qty-row"><button type="button" class="qty-btn minus" onclick="qtyChange('g390',-1)">−</button><input type="text" id="g390" value="0" readonly><button type="button" class="qty-btn plus" onclick="qtyChange('g390',1)">+</button></div>
+                                <span class="unit">包</span>
+                            </div>
+                            <div class="gift-cell">
+                                <span class="price-tag">590 元</span>
+                                <div class="qty-row"><button type="button" class="qty-btn minus" onclick="qtyChange('g590',-1)">−</button><input type="text" id="g590" value="0" readonly><button type="button" class="qty-btn plus" onclick="qtyChange('g590',1)">+</button></div>
+                                <span class="unit">包</span>
+                            </div>
+                            <div class="gift-cell">
+                                <span class="price-tag">820 元</span>
+                                <div class="qty-row"><button type="button" class="qty-btn minus" onclick="qtyChange('g820',-1)">−</button><input type="text" id="g820" value="0" readonly><button type="button" class="qty-btn plus" onclick="qtyChange('g820',1)">+</button></div>
+                                <span class="unit">包</span>
+                            </div>
+                            <div class="gift-cell">
+                                <span class="price-tag">1690 元</span>
+                                <div class="qty-row"><button type="button" class="qty-btn minus" onclick="qtyChange('g1690',-1)">−</button><input type="text" id="g1690" value="0" readonly><button type="button" class="qty-btn plus" onclick="qtyChange('g1690',1)">+</button></div>
                                 <span class="unit">包</span>
                             </div>
                 </div>
@@ -550,6 +587,101 @@ document.addEventListener('change', function(e){
 });
 
 // ============================
+// 卡面清單管理
+// ============================
+var charIconMap = {'⭐️':'沈星回','🍐':'黎深','🐟':'祁煜','🐦‍⬛':'秦徹','🍎':'夏以晝'};
+var stdNames = {'⭐️':'常駐星星','🍐':'常駐小梨','🐟':'常駐小魚','🐦‍⬛':'常駐烏鴉','🍎':'常駐哥哥'};
+var charOptions = Object.entries(charIconMap).map(([icon,name])=> `<option value="${icon}">${icon} ${name}</option>`).join('');
+
+function addCard(){
+    const div = document.createElement('div');
+    div.className = 'card-entry';
+    div.innerHTML = `
+        <select class="cardChar">
+            <option value="" disabled selected hidden>角色</option>
+            ${charOptions}
+        </select>
+        <input type="text" class="cardName" placeholder="卡面名（例：霧海離歌）">
+        <button type="button" class="card-del" onclick="removeCard(this)">✕</button>
+    `;
+    document.getElementById('cardsList').appendChild(div);
+    // 角色或卡面名變更時更新出卡選項
+    div.querySelector('.cardChar').addEventListener('change', updatePullCardOptions);
+    div.querySelector('.cardName').addEventListener('input', updatePullCardOptions);
+    updateCardDeleteBtns();
+}
+
+function removeCard(btn){
+    const entries = document.querySelectorAll('#cardsList .card-entry');
+    if(entries.length <= 1){
+        showToast('至少要保留一張卡面', true);
+        return;
+    }
+    btn.parentElement.remove();
+    updatePullCardOptions();
+    updateCardDeleteBtns();
+}
+
+function updateCardDeleteBtns(){
+    const entries = document.querySelectorAll('#cardsList .card-entry');
+    entries.forEach(entry => {
+        const btn = entry.querySelector('.card-del');
+        if(entries.length <= 1){
+            btn.style.display = 'none';
+        } else {
+            btn.style.display = '';
+        }
+    });
+}
+
+// 取得目前所有卡面（角色·卡面名 格式）
+function getCardsList(){
+    const entries = document.querySelectorAll('#cardsList .card-entry');
+    const cards = [];
+    entries.forEach(entry => {
+        const icon = entry.querySelector('.cardChar').value;
+        const name = entry.querySelector('.cardName').value.trim();
+        if(icon && name){
+            cards.push({ icon, char: charIconMap[icon], fullName: charIconMap[icon] + '·' + name });
+        }
+    });
+    return cards;
+}
+
+// 更新所有出卡紀錄的卡名下拉選項
+function updatePullCardOptions(){
+    const cards = getCardsList();
+    document.querySelectorAll('.pull-entry').forEach(entry => {
+        const select = entry.querySelector('.pIcon');
+        const nameSelect = entry.querySelector('.pName');
+        // 只更新非加抽、非鎖定的
+        if(nameSelect.tagName === 'SELECT' && !nameSelect.readOnly){
+            const currentVal = nameSelect.value;
+            const icon = select.value;
+            let opts = '<option value="" disabled selected hidden>— 選擇卡面 —</option>';
+            // 該角色的目標卡
+            if(icon && !extraIcons.includes(icon)){
+                cards.filter(c => c.icon === icon).forEach(c => {
+                    opts += `<option value="${c.fullName}">${c.fullName}</option>`;
+                });
+                // 常駐選項
+                if(stdNames[icon]){
+                    opts += `<option value="${stdNames[icon]}">${stdNames[icon]}（常駐）</option>`;
+                }
+                // 手動輸入選項
+                opts += '<option value="__custom__">自行輸入...</option>';
+            }
+            nameSelect.innerHTML = opts;
+            // 嘗試還原之前選的值
+            if(currentVal) nameSelect.value = currentVal;
+        }
+    });
+}
+
+// 預設新增一張卡面
+addCard();
+
+// ============================
 // 載入現有資料
 // ============================
 function loadDataList(){
@@ -653,10 +785,6 @@ function addPull(){
     div.innerHTML = `
         <span class="pull-num">#${pullCount}</span>
         <div class="form-row">
-            <div class="form-group" style="flex:2">
-                <label>卡名</label>
-                <input type="text" class="pName" placeholder="例：祁煜·霧海神臨 或 常駐烏鴉">
-            </div>
             <div class="form-group">
                 <label>角色</label>
                 <select class="pIcon" onchange="syncExtra(this)">
@@ -669,6 +797,12 @@ function addPull(){
                     <option value="📸">📸 拍照動作(加抽)</option>
                     <option value="👔">👔 拿衣服(加抽)</option>
                     <option value="🎲">🎲 未出五星(加抽)</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex:2">
+                <label>卡名</label>
+                <select class="pName">
+                    <option value="" disabled selected hidden>— 先選角色 —</option>
                 </select>
             </div>
         </div>
@@ -687,10 +821,10 @@ function addPull(){
         </div>
         <div class="form-row">
             <div class="check-row">
-                <label class="check-item"><input type="checkbox" class="pStd" onchange="this.parentElement.classList.toggle('active',this.checked)"> 常駐</label>
+                <label class="check-item"><input type="checkbox" class="pStd" onchange="guardStdCheckbox(this)"> 常駐</label>
                 <label class="check-item"><input type="checkbox" class="pDbl" onchange="this.parentElement.classList.toggle('active',this.checked)"> 雙蛋黃</label>
                 <label class="check-item"><input type="checkbox" class="pBox" onchange="this.parentElement.classList.toggle('active',this.checked)"> 開盒子</label>
-                <label class="check-item"><input type="checkbox" class="pExtra" onchange="this.parentElement.classList.toggle('active',this.checked)"> 加抽</label>
+                <label class="check-item"><input type="checkbox" class="pExtra" onchange="guardExtraCheckbox(this)"> 加抽</label>
             </div>
         </div>
         <div style="text-align:right;margin-top:6px">
@@ -710,6 +844,14 @@ function removePull(id){
     const remaining = document.querySelectorAll('#pullsList .pull-entry');
     remaining.forEach((entry, i) => {
         entry.querySelector('.pull-num').textContent = '#' + (i + 1);
+        // 刪除中間筆後，修正後續累計抽數不能小於上一筆
+        const pAtInput = entry.querySelector('.pAt');
+        const curVal = parseInt(pAtInput.value) || 0;
+        const minVal = getPrevPullAt(entry);
+        if(curVal < minVal){
+            pAtInput.value = minVal;
+            pAtInput.classList.toggle('has-value', minVal > 0);
+        }
     });
     updateDeleteBtns();
 }
@@ -747,8 +889,9 @@ var extraIcons = ['📸','👔','🎲'];
 
 function syncExtra(select){
     const entry = select.closest('.pull-entry');
-    const isExtra = extraIcons.includes(select.value);
-    const hasValue = !!select.value;
+    const icon = select.value;
+    const isExtra = extraIcons.includes(icon);
+    const hasValue = !!icon;
 
     // 加抽 checkbox
     const cbExtra = entry.querySelector('.pExtra');
@@ -762,35 +905,120 @@ function syncExtra(select){
     const lblBox = cbBox.parentElement;
 
     // 卡名欄位
-    const nameInput = entry.querySelector('.pName');
+    const nameEl = entry.querySelector('.pName');
+    const nameWrap = nameEl.parentElement;
     const extraNames = {'📸':'拍照動作(加抽)','👔':'拿衣服(加抽)','🎲':'未出五星(加抽)'};
 
     if(isExtra){
-        // 加抽類：自動帶入卡名並鎖定，顯示加抽，隱藏常駐/雙蛋黃/開盒子
-        nameInput.value = extraNames[select.value]; nameInput.readOnly = true;
+        // 加抽類：卡名替換成顯示文字（不可改）
+        nameWrap.innerHTML = '<label>卡名</label><input type="text" class="pName" value="'+extraNames[icon]+'" readonly>';
         cbExtra.checked = true; lblExtra.classList.add('active'); lblExtra.style.display = '';
         cbStd.checked = false; lblStd.classList.remove('active'); lblStd.style.display = 'none';
         cbDbl.checked = false; lblDbl.classList.remove('active'); lblDbl.style.display = 'none';
         cbBox.checked = false; lblBox.classList.remove('active'); lblBox.style.display = 'none';
     } else if(hasValue){
-        // 確定角色：解鎖卡名，顯示常駐/雙蛋黃/開盒子，隱藏加抽
-        if(nameInput.readOnly){ nameInput.value = ''; nameInput.readOnly = false; }
+        // 確定角色：卡名替換成下拉選單
+        const cards = getCardsList();
+        let opts = '<option value="" disabled selected hidden>— 選擇卡面 —</option>';
+        cards.filter(c => c.icon === icon).forEach(c => {
+            opts += '<option value="'+c.fullName+'">'+c.fullName+'</option>';
+        });
+        if(stdNames[icon]){
+            opts += '<option value="'+stdNames[icon]+'">'+stdNames[icon]+'（常駐）</option>';
+        }
+        opts += '<option value="__custom__">自行輸入...</option>';
+        nameWrap.innerHTML = '<label>卡名</label><select class="pName" onchange="onPullNameChange(this)">'+opts+'</select>';
+        // 自動連動常駐 checkbox
+        entry.querySelector('.pName').addEventListener('change', function(){
+            const isStd = this.value.startsWith('常駐');
+            cbStd.checked = isStd;
+            cbStd.parentElement.classList.toggle('active', isStd);
+        });
         cbExtra.checked = false; lblExtra.classList.remove('active'); lblExtra.style.display = 'none';
         lblStd.style.display = ''; lblDbl.style.display = ''; lblBox.style.display = '';
     } else {
-        // 未選：解鎖卡名，全部顯示
-        nameInput.readOnly = false;
+        nameWrap.innerHTML = '<label>卡名</label><select class="pName"><option value="" disabled selected hidden>— 先選角色 —</option></select>';
         lblExtra.style.display = ''; lblStd.style.display = ''; lblDbl.style.display = ''; lblBox.style.display = '';
+    }
+}
+
+// ============================
+// 常駐 checkbox 防護：選了常駐角色就不能取消勾選
+// ============================
+function guardStdCheckbox(cb){
+    const entry = cb.closest('.pull-entry');
+    if(!entry) { cb.parentElement.classList.toggle('active', cb.checked); return; }
+    const pNameEl = entry.querySelector('.pName');
+    const pNameVal = pNameEl ? pNameEl.value : '';
+    // 如果目前選的卡名是常駐開頭，擋住取消勾選
+    if(!cb.checked && pNameVal.startsWith('常駐')){
+        cb.checked = true;  // 強制勾回來
+        showToast('常駐角色不能取消「常駐」標籤', true);
+    }
+    cb.parentElement.classList.toggle('active', cb.checked);
+}
+
+// ============================
+// 加抽 checkbox 防護：選了加抽角色就不能取消勾選
+// ============================
+function guardExtraCheckbox(cb){
+    const entry = cb.closest('.pull-entry');
+    if(!entry) { cb.parentElement.classList.toggle('active', cb.checked); return; }
+    const pIcon = entry.querySelector('.pIcon').value;
+    // 如果目前選的角色是加抽類（📸👔🎲），擋住取消勾選
+    if(!cb.checked && extraIcons.includes(pIcon)){
+        cb.checked = true;  // 強制勾回來
+        showToast('加抽角色不能取消「加抽」標籤', true);
+    }
+    cb.parentElement.classList.toggle('active', cb.checked);
+}
+
+// 卡名下拉選「自行輸入」時替換成 input
+function onPullNameChange(sel){
+    const entry = sel.closest('.pull-entry');
+    if(sel.value === '__custom__'){
+        const wrap = sel.parentElement;
+        wrap.innerHTML = '<label>卡名</label><input type="text" class="pName" placeholder="自行輸入卡名">';
+        wrap.querySelector('.pName').focus();
+        // 自行輸入時重置常駐
+        if(entry){
+            const cbStd = entry.querySelector('.pStd');
+            cbStd.checked = false;
+            cbStd.parentElement.classList.remove('active');
+        }
+        return;
+    }
+    // 自動連動常駐
+    if(entry){
+        const cbStd = entry.querySelector('.pStd');
+        const isStd = sel.value.startsWith('常駐');
+        cbStd.checked = isStd;
+        cbStd.parentElement.classList.toggle('active', isStd);
     }
 }
 
 // ============================
 // 加減按鈕
 // ============================
+// 取得該筆出卡紀錄的上一筆累計抽數
+function getPrevPullAt(entry){
+    const prev = entry.previousElementSibling;
+    if(!prev || !prev.classList.contains('pull-entry')) return 0;
+    return parseInt(prev.querySelector('.pAt').value) || 0;
+}
+
 function sanitizeNum(el){
     el.value = el.value.replace(/[^0-9]/g, '');
     let val = parseInt(el.value) || 0;
     if(val < 0) val = 0;
+    // 累計抽數不能小於上一筆
+    if(el.classList.contains('pAt')){
+        const entry = el.closest('.pull-entry');
+        if(entry){
+            const minVal = getPrevPullAt(entry);
+            if(val < minVal) val = minVal;
+        }
+    }
     el.value = val;
     el.classList.toggle('has-value', val > 0);
 }
@@ -800,6 +1028,14 @@ function pullQtyChange(btn, cls, delta){
     const input = row.querySelector('.' + cls);
     let val = (parseInt(input.value) || 0) + delta;
     if(val < 0) val = 0;
+    // 累計抽數不能小於上一筆
+    if(cls === 'pAt'){
+        const entry = input.closest('.pull-entry');
+        if(entry){
+            const minVal = getPrevPullAt(entry);
+            if(val < minVal) val = minVal;
+        }
+    }
     input.value = val;
     input.classList.toggle('has-value', val > 0);
 }
@@ -817,8 +1053,8 @@ function qtyChange(id, delta){
 // 禮包計算
 // ============================
 function calcGift(){
-    const prices = [15, 30, 150, 290, 320, 390];
-    const ids = ['g15','g30','g150','g290','g320','g390'];
+    const prices = [15, 30, 150, 290, 320, 390, 590, 820, 1690];
+    const ids = ['g15','g30','g150','g290','g320','g390','g590','g820','g1690'];
     let total = 0;
     let parts = [];
     ids.forEach((id, i) => {
@@ -857,14 +1093,26 @@ function buildBannerObj(){
     const dateTo = document.getElementById('fDateTo').value;
     const type = document.getElementById('fType').value;
     const partner = document.getElementById('fPartner').value.trim();
-    const cardsText = document.getElementById('fCards').value.trim();
+    const cards = getCardsList().map(c => c.fullName);
     const skip = (currentPullMode === 'skip');
 
     if(!name){ focusField('fName','請填寫卡池名稱'); return null; }
     if(!dateFrom){ focusField('fDateFrom','請填寫起始日期'); return null; }
     if(!dateTo){ focusField('fDateTo','請填寫結束日期'); return null; }
     if(!type){ focusField('fType','請選擇分類'); return null; }
-    if(!cardsText){ focusField('fCards','請填寫卡面清單'); return null; }
+    if(cards.length === 0){
+        // 檢查是不是有填一半的
+        const cardEntries = document.querySelectorAll('#cardsList .card-entry');
+        let hasIncomplete = false;
+        cardEntries.forEach(entry => {
+            const icon = entry.querySelector('.cardChar').value;
+            const cname = entry.querySelector('.cardName').value.trim();
+            if(icon && !cname){ focusEl(entry.querySelector('.cardName'),'卡面名稱未填'); hasIncomplete = true; }
+            else if(!icon && cname){ focusEl(entry.querySelector('.cardChar'),'卡面角色未選'); hasIncomplete = true; }
+        });
+        if(!hasIncomplete) showToast('請至少新增一張卡面', true);
+        return null;
+    }
 
     const fromFmt = fmtDate(dateFrom);
     const toShort = shortDate(dateTo);
@@ -877,7 +1125,6 @@ function buildBannerObj(){
         dateStr = fromFmt + '-' + fmtDate(dateTo);
     }
 
-    const cards = cardsText ? cardsText.split('\n').map(s=>s.trim()).filter(s=>s) : [];
 
     if(skip){
         return {
@@ -893,8 +1140,9 @@ function buildBannerObj(){
     let prevPullAt = 0;
     pullEntries.forEach(entry => {
         if(hasError) return;
-        const pName = entry.querySelector('.pName').value.trim();
-        if(!pName) return;
+        const pNameEl = entry.querySelector('.pName');
+        const pName = pNameEl.value.trim();
+        if(!pName || pName === '__custom__') return;
         const pIcon = entry.querySelector('.pIcon').value;
         if(!pIcon){ focusEl(entry.querySelector('.pIcon'),'出卡紀錄有未選擇角色的欄位'); hasError = true; return; }
         const pAt = parseInt(entry.querySelector('.pAt').value) || 0;
@@ -911,7 +1159,8 @@ function buildBannerObj(){
         const pExtra = entry.querySelector('.pExtra').checked && entry.querySelector('.pExtra').parentElement.style.display !== 'none';
 
         let p = {n: pName, icon: pIcon, at: pAt, dia: pDia};
-        if(pStd) p.std = true;
+        // 強制防護：卡名為常駐開頭時，不管 checkbox 狀態都設為常駐
+        if(pStd || pName.startsWith('常駐')) p.std = true;
         if(pDbl) p.dbl = true;
         if(pBox) p.box = true;
         if(pExtra || pIcon==='📸' || pIcon==='👔' || pIcon==='🎲') p.extra = true;
@@ -1047,13 +1296,15 @@ function clearForm(){
     document.getElementById('fDateTo').value = '';
     document.getElementById('fType').value = '';
     document.getElementById('fPartner').value = '';
-    document.getElementById('fCards').value = '';
+    // 重置卡面清單
+    document.getElementById('cardsList').innerHTML = '';
+    addCard();
     // 重置抽卡狀態
     setPullMode('hasStar');
     document.getElementById('pullsList').innerHTML = '';
     pullCount = 0;
     addPull();
-    ['g15','g30','g150','g290','g320','g390'].forEach(id => document.getElementById(id).value = '0');
+    ['g15','g30','g150','g290','g320','g390','g590','g820','g1690'].forEach(id => document.getElementById(id).value = '0');
     calcGift();
     document.getElementById('previewSection').style.display = 'none';
     // 清除所有 has-value 標記
