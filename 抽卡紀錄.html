@@ -251,11 +251,208 @@
             background:#fff; border-radius:50%; transition: transform .2s;
         }
         .toggle-switch.on::after { transform:translateX(16px); }
+
+        /* ===== 管理後台樣式 ===== */
+        .form-section {
+            background:var(--bg-card); border:1px solid var(--border);
+            border-radius:14px; padding:24px; margin-bottom:20px;
+        }
+        .form-section h2 {
+            font-size:1.2em; color:var(--accent); margin-bottom:16px;
+            padding-bottom:8px; border-bottom:1px solid var(--border);
+            letter-spacing:2px;
+        }
+        .form-row { display:flex; gap:12px; margin-bottom:12px; align-items:flex-start; flex-wrap:wrap; }
+        .form-group { display:flex; flex-direction:column; gap:4px; flex:1; min-width:140px; }
+        .form-group label { font-size:.9em; color:var(--text-dim); letter-spacing:1px; }
+        .form-group input, .form-group select, .form-group textarea {
+            padding:10px 14px; border-radius:8px; border:1px solid var(--border);
+            background:rgba(255,255,255,.03); color:var(--text); font-size:1em;
+            outline:none; font-family:inherit;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--accent); }
+        .form-group select option { background:#1a1040; color:#e0e0e0; }
+        .form-group input.has-value, .form-group select.has-value, .form-group textarea.has-value {
+            border-left:4px solid var(--accent); border-color:rgba(167,139,250,.5);
+            background:rgba(167,139,250,.18); color:#ffffff; box-shadow:0 0 6px rgba(167,139,250,.2);
+        }
+        .form-group select { -webkit-appearance:none; -moz-appearance:none; appearance:none; padding-right:30px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237c8aaa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; }
+        .form-group input[type="date"], .form-group input[type="datetime-local"] { min-height:42px; cursor:pointer; }
+        .form-group input[type="date"]::-webkit-calendar-picker-indicator, .form-group input[type="datetime-local"]::-webkit-calendar-picker-indicator { filter:invert(.7); cursor:pointer; }
+        .form-group textarea { resize:vertical; min-height:60px; }
+
+        .pull-entry, .purchase-entry {
+            background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.05);
+            border-radius:10px; padding:14px; margin-bottom:10px; position:relative;
+        }
+        .pull-entry .pull-num, .purchase-entry .pull-num {
+            position:absolute; top:8px; left:12px; font-size:.9em; color:var(--accent);
+            background:rgba(167,139,250,.15); padding:4px 12px; border-radius:6px; font-weight:600;
+        }
+        .pull-entry .form-row, .purchase-entry .form-row { margin-top:12px; }
+        .pull-entry .form-row:first-of-type, .purchase-entry .form-row:first-of-type { margin-top:36px; }
+
+        .check-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+        .check-item {
+            font-size:.9em; padding:7px 18px; border-radius:20px; cursor:pointer;
+            background:rgba(255,255,255,.04); border:1px solid var(--border); color:var(--text-dim);
+            transition:all .2s; user-select:none; display:inline-flex; align-items:center; gap:4px;
+        }
+        .check-item:hover { border-color:rgba(167,139,250,.3); color:rgba(167,139,250,.7); }
+        .check-item.active { background:rgba(167,139,250,.35); border-color:var(--accent); color:#ffffff; font-weight:600; box-shadow:0 0 8px rgba(167,139,250,.3); }
+        .check-item.active-red { background:rgba(252,165,165,.3); border-color:var(--red); color:#ffffff; font-weight:600; box-shadow:0 0 8px rgba(252,165,165,.3); }
+        .check-item input[type="checkbox"] { display:none; }
+
+        .btn {
+            padding:10px 24px; border-radius:8px; border:1px solid var(--border);
+            background:var(--bg-card); color:var(--text-dim); cursor:pointer; font-size:.95em;
+            transition:all .2s; font-family:inherit;
+        }
+        .btn:hover { border-color:var(--accent); color:var(--accent); }
+        .btn-accent { background:rgba(167,139,250,.15); border-color:var(--accent); color:var(--accent); }
+        .btn-accent:hover { background:rgba(167,139,250,.3); }
+        .btn-danger { border-color:var(--red); color:var(--red); }
+        .btn-danger:hover { background:rgba(252,165,165,.1); }
+        .btn-green { border-color:var(--green); color:var(--green); }
+        .btn-green:hover { background:rgba(110,231,183,.1); }
+        .btn-row { display:flex; gap:10px; flex-wrap:wrap; }
+
+        .preview-box {
+            background:rgba(0,0,0,.3); border:1px solid var(--border); border-radius:10px;
+            padding:16px; font-family:'Consolas','Source Code Pro',monospace;
+            font-size:.82em; line-height:1.6; white-space:pre-wrap; word-break:break-all;
+            color:#c4b5fd; max-height:400px; overflow-y:auto; position:relative;
+        }
+        .copy-btn {
+            position:absolute; top:8px; right:8px; padding:4px 12px; border-radius:6px;
+            background:rgba(167,139,250,.2); border:1px solid var(--accent); color:var(--accent);
+            cursor:pointer; font-size:.8em;
+        }
+        .copy-btn:hover { background:rgba(167,139,250,.4); }
+
+        .toast {
+            position:fixed; top:20px; right:20px; padding:14px 24px; border-radius:10px;
+            background:rgba(110,231,183,.15); border:1px solid var(--green); color:var(--green);
+            font-size:.9em; z-index:999; display:none; opacity:0; transition:opacity .3s;
+        }
+        .toast.show { display:block; opacity:1; }
+        .toast.error { background:rgba(252,165,165,.15); border-color:var(--red); color:var(--red); }
+
+        .data-list { margin-top:16px; }
+        .data-item {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:10px 16px; border-radius:8px; border:1px solid rgba(255,255,255,.03);
+            margin-bottom:6px; font-size:.85em;
+        }
+        .data-item:hover { background:rgba(167,139,250,.04); }
+        .data-item .name { color:var(--accent); font-weight:600; }
+        .data-item .meta { color:var(--text-dim); font-size:.85em; }
+
+        .admin-gift-grid {
+            display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px;
+        }
+        .gift-cell {
+            display:flex; flex-direction:column; align-items:center; gap:4px;
+            background:rgba(255,255,255,.02); border:1px solid var(--border);
+            border-radius:8px; padding:10px 8px;
+        }
+        .gift-cell .price-tag { font-size:.9em; color:var(--yellow); font-weight:600; letter-spacing:1px; }
+        .gift-cell .qty-row { display:flex; align-items:center; gap:0; }
+        .gift-cell .qty-btn {
+            width:40px; height:40px; border:1px solid var(--border); background:rgba(255,255,255,.06);
+            color:var(--yellow); font-size:1.2em; font-weight:700; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; transition:all .2s;
+            user-select:none; line-height:1;
+        }
+        .gift-cell .qty-btn:hover { background:rgba(251,191,36,.15); border-color:var(--yellow); }
+        .gift-cell .qty-btn:active { background:rgba(251,191,36,.25); }
+        .gift-cell .qty-btn.minus { border-radius:6px 0 0 6px; }
+        .gift-cell .qty-btn.plus { border-radius:0 6px 6px 0; }
+        .gift-cell input {
+            width:50px; height:40px; padding:6px 4px; border-radius:0; border:1px solid var(--border);
+            border-left:none; border-right:none;
+            background:rgba(255,255,255,.03); color:#b0b8cc; font-size:1em;
+            text-align:center; outline:none;
+        }
+        .gift-cell input:focus { border-color:var(--yellow); }
+        .gift-cell .unit { font-size:.85em; color:var(--text-dim); }
+        .calc-result {
+            font-size:1.05em; color:var(--yellow); font-weight:700; margin-top:4px;
+            padding-top:10px; border-top:1px solid rgba(251,191,36,.1);
+        }
+
+        .pull-cell {
+            display:flex; flex-direction:column; align-items:center; gap:6px;
+            background:rgba(167,139,250,.04); border:1px solid rgba(167,139,250,.15);
+            border-radius:8px; padding:12px 10px; flex:1;
+        }
+        .pull-cell-tag { font-size:.9em; color:var(--accent); font-weight:600; letter-spacing:1px; }
+        .pull-cell-unit { font-size:.78em; color:var(--text-dim); }
+        .pull-qty-row { display:flex; align-items:center; gap:0; }
+        .pull-qty-row .qty-btn {
+            width:40px; height:40px; border:1px solid var(--border); background:rgba(255,255,255,.06);
+            color:var(--accent); font-size:1.2em; font-weight:700; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; transition:all .2s;
+            user-select:none; line-height:1;
+        }
+        .pull-qty-row .qty-btn.minus { border-radius:6px 0 0 6px; }
+        .pull-qty-row .qty-btn.plus { border-radius:0 6px 6px 0; }
+        .pull-qty-row .qty-btn:hover { background:rgba(167,139,250,.15); border-color:var(--accent); }
+        .pull-qty-row .qty-btn:active { background:rgba(167,139,250,.25); }
+        .pull-qty-row input {
+            width:60px; height:40px; padding:6px 4px; border-radius:0; border:1px solid var(--border);
+            border-left:none; border-right:none;
+            background:rgba(255,255,255,.03); color:#b0b8cc; font-size:1em;
+            text-align:center; outline:none; -moz-appearance:textfield;
+        }
+        .pull-qty-row input::-webkit-outer-spin-button,
+        .pull-qty-row input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+        .pull-qty-row input.has-value, .gift-cell input.has-value { color:#ffffff; }
+
+        .card-entry { display:flex; gap:8px; align-items:center; margin-bottom:6px; }
+        .card-entry select, .card-entry input {
+            padding:8px 12px; border-radius:8px; border:1px solid var(--border);
+            background:rgba(255,255,255,.03); color:#b0b8cc; font-size:.95em;
+            outline:none; font-family:inherit;
+        }
+        .card-entry select { -webkit-appearance:none; -moz-appearance:none; appearance:none;
+            padding-right:28px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237c8aaa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 8px center;
+        }
+        .card-entry select option { background:#1a1040; color:#e0e0e0; }
+        .card-entry input { flex:2; }
+        .card-entry .card-del {
+            background:none; border:none; color:var(--red); cursor:pointer; font-size:1.1em;
+            padding:4px 8px; opacity:.5; transition:opacity .2s;
+        }
+        .card-entry .card-del:hover { opacity:1; }
+
+        .skip-notice {
+            background:rgba(252,165,165,.06); border:1px solid rgba(252,165,165,.1);
+            border-radius:8px; padding:12px 16px; color:var(--red); font-size:.85em;
+            margin-bottom:16px;
+        }
+
+        @media(max-width:600px){
+            #tabAdmin .form-row { flex-direction:column; }
+            #tabAdmin .form-group { min-width:100%; }
+            #tabAdmin .form-group select, #tabAdmin .form-group input[type="date"], #tabAdmin .form-group input[type="datetime-local"] {
+                -webkit-appearance:none; -moz-appearance:none; appearance:none;
+            }
+            #tabAdmin .form-row:has(.pull-cell) { flex-direction:row; }
+            #tabAdmin .pull-cell { min-width:0; flex:1; padding:10px 6px; }
+            #tabAdmin .pull-qty-row .qty-btn { width:34px; height:34px; font-size:1em; }
+            #tabAdmin .pull-qty-row input { width:50px; height:34px; font-size:.85em; }
+            .admin-gift-grid { grid-template-columns:repeat(2,1fr); gap:8px; }
+            .gift-cell { padding:8px 4px; }
+            .gift-cell .qty-btn { width:34px; height:34px; font-size:1em; }
+            .gift-cell input { width:40px; height:34px; font-size:.85em; }
+        }
     </style>
 </head>
 <body>
 <div class="container" id="app"></div>
 <button class="back-top" id="btnTop">↑</button>
+<div class="toast" id="toast"></div>
 
 <!-- 載入外部資料檔 -->
 <script src="data.js"></script>
@@ -510,20 +707,27 @@ function compute(){
 // 分頁切換
 // ============================
 function switchTab(tab, btn){
-    // 切換 tab 按鈕樣式
-    document.querySelectorAll('.tab-btn').forEach(function(b){ b.className = 'tab-btn'; });
+    // 切換 tab 按鈕樣式（只處理主 tab-bar 裡的按鈕）
+    document.querySelectorAll('#app > .tab-bar .tab-btn').forEach(function(b){ b.className = 'tab-btn'; });
     if(tab === 'purchase'){
         btn.className = 'tab-btn active-yellow';
     } else {
         btn.className = 'tab-btn active';
     }
     // 切換頁面顯示
-    document.querySelectorAll('.tab-page').forEach(function(p){ p.classList.remove('show'); });
-    var targetPage = tab === 'purchase' ? document.getElementById('tabPurchase') : document.getElementById('tabGacha');
+    document.querySelectorAll('#app > .tab-page').forEach(function(p){ p.classList.remove('show'); });
+    var targetPage;
+    if(tab === 'purchase') targetPage = document.getElementById('tabPurchase');
+    else if(tab === 'admin') targetPage = document.getElementById('tabAdmin');
+    else targetPage = document.getElementById('tabGacha');
     if(targetPage) targetPage.classList.add('show');
-    // 切到課金紀錄時渲染（每次都重新渲染以確保圖表正確）
+    // 切到課金紀錄時渲染
     if(tab === 'purchase'){
         renderPurchaseTab();
+    }
+    // 切到管理後台時初始化（只初始化一次）
+    if(tab === 'admin' && !window._adminInitialized){
+        initAdminPanel();
     }
     // 捲到頂端
     window.scrollTo({top:0, behavior:'smooth'});
@@ -548,8 +752,9 @@ function render(){
 
     // --- 分頁 Tab ---
     h += `<div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('gacha',this)">抽卡紀錄</button>
+        <button class="tab-btn active" onclick="switchTab('gacha',this)">🌟 抽卡紀錄</button>
         <button class="tab-btn" onclick="switchTab('purchase',this)">💰 課金紀錄</button>
+        <button class="tab-btn" onclick="switchTab('admin',this)">⚙️ 管理後台</button>
     </div>`;
 
     // ========== 抽卡紀錄分頁 ==========
@@ -728,6 +933,9 @@ function render(){
 
     // ========== 課金紀錄分頁（只放容器，內容由 renderPurchaseTab 動態產生）==========
     h += `<div class="tab-page" id="tabPurchase"><div id="purchaseTabContent"></div></div>`;
+
+    // ========== 管理後台分頁 ==========
+    h += `<div class="tab-page" id="tabAdmin"><div id="adminTabContent"></div></div>`;
 
     app.innerHTML = h;
 
@@ -1530,6 +1738,1179 @@ window.addEventListener('resize', function(){
 
 // 啟動
 render();
+
+// ============================
+// 管理後台：初始化 & 全部功能
+// ============================
+window._adminInitialized = false;
+
+function initAdminPanel(){
+    if(window._adminInitialized) return;
+    window._adminInitialized = true;
+
+    var adminHTML = '';
+    // --- 登入畫面 ---
+    adminHTML += '<div id="adminLoginScreen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:40vh;gap:20px">';
+    adminHTML += '<h2 style="font-size:2em;color:var(--accent);letter-spacing:6px">管理後台</h2>';
+    adminHTML += '<p style="color:var(--text-dim)">請輸入密碼以進入管理介面</p>';
+    adminHTML += '<form onsubmit="event.preventDefault();doAdminLogin()" style="text-align:center">';
+    adminHTML += '<input type="password" id="adminPwdInput" placeholder="請輸入密碼" autocomplete="current-password" style="width:300px;padding:12px 18px;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);font-size:1.05em;text-align:center;outline:none;margin-bottom:12px"><br>';
+    adminHTML += '<button type="submit" style="padding:12px 40px;border-radius:12px;border:1px solid var(--accent);background:rgba(167,139,250,.15);color:var(--accent);font-size:1.1em;cursor:pointer;letter-spacing:3px">進入</button>';
+    adminHTML += '</form>';
+    adminHTML += '<div id="adminLoginErr" style="color:var(--red);font-size:.9em;min-height:1.2em"></div>';
+    adminHTML += '</div>';
+
+    // --- 管理主面板 ---
+    adminHTML += '<div id="adminMainPanel" style="display:none">';
+    adminHTML += '<div style="text-align:center;margin-bottom:24px;padding:16px;background:linear-gradient(135deg,rgba(167,139,250,.08),rgba(96,165,250,.06));border:1px solid rgba(167,139,250,.2);border-radius:14px">';
+    adminHTML += '<h2 style="font-size:1.4em;color:var(--accent);letter-spacing:3px">管理後台</h2>';
+    adminHTML += '<div style="color:var(--text-dim);font-size:.82em;margin-top:4px">新增 / 管理資料</div>';
+    adminHTML += '</div>';
+
+    // 管理內部分頁
+    adminHTML += '<div class="tab-bar" id="adminInnerTabBar">';
+    adminHTML += '<button class="tab-btn active" onclick="switchAdminTab(\'banner\',this)">🌟 卡池管理</button>';
+    adminHTML += '<button class="tab-btn" onclick="switchAdminTab(\'purchase\',this)">💰 課金紀錄</button>';
+    adminHTML += '</div>';
+
+    // ========== 卡池管理分頁 ==========
+    adminHTML += '<div class="tab-page show" id="adminTabBanner">';
+
+    // 現有資料總覽
+    adminHTML += '<div class="form-section"><h2>現有卡池資料（共 <span id="bannerCount">0</span> 期）</h2><div id="dataList" class="data-list"></div></div>';
+
+    // 新增卡池表單
+    adminHTML += '<div class="form-section"><h2>新增卡池</h2>';
+    adminHTML += '<div class="form-row"><div class="form-group" style="flex:2"><label>卡池名稱（【】裡的名字）</label><input type="text" id="fName" placeholder="例：當海淹沒於海"></div>';
+    adminHTML += '<div class="form-group"><label>備註 / 標籤</label><input type="text" id="fTag" placeholder="例：海神日卡復刻"></div></div>';
+    adminHTML += '<div class="form-row"><div class="form-group"><label>起始日期</label><input type="date" id="fDateFrom"></div>';
+    adminHTML += '<div class="form-group"><label>結束日期</label><input type="date" id="fDateTo"></div>';
+    adminHTML += '<div class="form-group"><label>分類</label><select id="fType" onchange="checkHasValue(this)"><option value="" disabled selected hidden>— 請選擇分類 —</option><option value="全員">全員</option><option value="日卡首次">日卡首次</option><option value="日卡復刻">日卡復刻</option><option value="生日卡">生日卡</option><option value="限定">限定</option><option value="復刻">復刻</option></select></div></div>';
+    adminHTML += '<div class="form-row"><div class="form-group"><label>搭檔身分（沒有就留空）</label><input type="text" id="fPartner" placeholder="例：祁煜·利莫里亞海神"></div></div>';
+
+    // 卡面清單
+    adminHTML += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><label style="font-size:.9em;color:var(--text-dim);letter-spacing:1px">卡面清單</label><button class="btn btn-accent" onclick="addCard()" style="font-size:.8em;padding:5px 14px">+ 新增卡面</button></div>';
+    adminHTML += '<div id="cardsList"></div>';
+
+    // 抽卡狀態
+    adminHTML += '<div class="form-row"><div class="check-row"><span class="check-item active" onclick="setPullMode(\'hasStar\')" id="modeHasStar">有抽</span><span class="check-item" onclick="setPullMode(\'skip\')" id="modeSkip" style="border-color:rgba(252,165,165,.2)">忘記抽 / 沒抽</span></div></div>';
+    adminHTML += '<div id="skipNotice" class="skip-notice" style="display:none">已標記為「忘記抽」，下方出卡紀錄和禮包欄位將被忽略。</div>';
+
+    // 出卡紀錄
+    adminHTML += '<div id="pullsSection"><div style="margin:16px 0 10px"><h2 style="margin:0;border:none;padding:0;font-size:1em;color:var(--accent)">出卡紀錄</h2></div>';
+    adminHTML += '<div id="pullsList"></div>';
+    adminHTML += '<div style="text-align:center;margin-top:10px"><button class="btn btn-accent" onclick="addPull()">+ 新增一筆</button></div></div>';
+
+    // 禮包計算
+    adminHTML += '<div id="giftSection" class="form-section" style="padding:16px;margin-top:16px"><h2 style="font-size:1em">禮包計算</h2>';
+    adminHTML += '<div class="admin-gift-grid">';
+    var giftPrices = [15,30,150,290,320,390,590,820,1690];
+    giftPrices.forEach(function(p){
+        adminHTML += '<div class="gift-cell"><span class="price-tag">'+p+' 元</span>';
+        adminHTML += '<div class="qty-row"><button type="button" class="qty-btn minus" onclick="qtyChange(\'g'+p+'\',-1)">−</button><input type="text" id="g'+p+'" value="0" readonly><button type="button" class="qty-btn plus" onclick="qtyChange(\'g'+p+'\',1)">+</button></div>';
+        adminHTML += '<span class="unit">包</span></div>';
+    });
+    adminHTML += '</div>';
+    adminHTML += '<div style="display:flex;align-items:center;gap:8px;font-size:.85em;color:var(--text-dim);margin:10px 0 6px">算式：<span id="giftFormula">-</span></div>';
+    adminHTML += '<div class="calc-result">總計：<span id="giftTotal">0</span> 元</div></div>';
+
+    // 操作按鈕
+    adminHTML += '<div class="btn-row" style="margin-top:20px;justify-content:center">';
+    adminHTML += '<button class="btn btn-green" onclick="generateCode()" style="font-size:1em;padding:10px 30px">產生程式碼</button>';
+    adminHTML += '<button class="btn btn-accent" onclick="saveToData()" style="font-size:1em;padding:10px 30px">儲存到 data.js</button>';
+    adminHTML += '<button class="btn btn-danger" onclick="clearForm()">清空表單</button>';
+    adminHTML += '</div></div>';
+
+    // 程式碼預覽
+    adminHTML += '<div class="form-section" id="previewSection" style="display:none"><h2>產生的程式碼</h2>';
+    adminHTML += '<div class="preview-box" id="previewBox" style="position:relative"><button class="copy-btn" onclick="copyCode()">複製</button><pre id="codeOutput"></pre></div>';
+    adminHTML += '<p style="color:var(--text-dim);font-size:.78em;margin-top:10px">可以直接複製這段程式碼，貼到 data.js 的 banners 陣列最後面（ ]; 之前）。<br>或點「儲存到 data.js」自動附加。</p></div>';
+
+    adminHTML += '</div>'; // 關閉 adminTabBanner
+
+    // ========== 課金紀錄分頁 ==========
+    adminHTML += '<div class="tab-page" id="adminTabPurchase">';
+
+    // 現有課金紀錄列表
+    adminHTML += '<div class="form-section"><h2 style="color:var(--yellow)">現有課金紀錄（共 <span id="purchaseCount">0</span> 筆）</h2><div id="purchaseList" class="data-list"></div></div>';
+
+    // 新增課金表單
+    adminHTML += '<div class="form-section"><h2 style="color:var(--yellow)">新增課金紀錄</h2>';
+    adminHTML += '<div id="purchaseEntries"></div>';
+    adminHTML += '<div style="text-align:center;margin-top:10px"><button class="btn btn-accent" onclick="addPurchaseEntry()">+ 新增一筆</button></div>';
+
+    // 課金操作按鈕
+    adminHTML += '<div class="btn-row" style="margin-top:20px;justify-content:center">';
+    adminHTML += '<button class="btn btn-green" onclick="generatePurchaseCode()" style="font-size:1em;padding:10px 30px">產生程式碼</button>';
+    adminHTML += '<button class="btn btn-accent" onclick="savePurchaseToData()" style="font-size:1em;padding:10px 30px">儲存到 data.js</button>';
+    adminHTML += '<button class="btn btn-danger" onclick="clearPurchaseForm()">清空表單</button>';
+    adminHTML += '</div></div>';
+
+    // 課金程式碼預覽
+    adminHTML += '<div class="form-section" id="purchasePreviewSection" style="display:none"><h2 style="color:var(--yellow)">產生的程式碼</h2>';
+    adminHTML += '<div class="preview-box" id="purchasePreviewBox" style="position:relative"><button class="copy-btn" onclick="copyPurchaseCode()" style="border-color:var(--yellow);color:var(--yellow)">複製</button><pre id="purchaseCodeOutput" style="color:#fde68a"></pre></div>';
+    adminHTML += '<p style="color:var(--text-dim);font-size:.78em;margin-top:10px">可以直接複製這段程式碼，貼到 data.js 的 purchases 陣列最後面（ ]; 之前）。<br>或點「儲存到 data.js」自動附加。</p></div>';
+
+    adminHTML += '</div>'; // 關閉 adminTabPurchase
+    adminHTML += '</div>'; // 關閉 adminMainPanel
+
+    document.getElementById('adminTabContent').innerHTML = adminHTML;
+
+    // 如果已登入過，直接顯示主面板
+    if(sessionStorage.getItem('admin_auth')==='1'){
+        document.getElementById('adminLoginScreen').style.display = 'none';
+        document.getElementById('adminMainPanel').style.display = 'block';
+        adminAfterLogin();
+    }
+}
+
+// ============================
+// 管理後台：密碼驗證
+// ============================
+var ADMIN_PWD_ENCODED = 'bGFkcw==';
+
+function doAdminLogin(){
+    var pwd = document.getElementById('adminPwdInput').value;
+    if(btoa(pwd) === ADMIN_PWD_ENCODED){
+        document.getElementById('adminLoginScreen').style.display = 'none';
+        document.getElementById('adminMainPanel').style.display = 'block';
+        sessionStorage.setItem('admin_auth','1');
+        adminAfterLogin();
+    } else {
+        document.getElementById('adminLoginErr').textContent = '密碼錯誤';
+    }
+}
+
+function adminAfterLogin(){
+    renderAdminDataList();
+    renderAdminPurchaseList();
+    addCard();
+    addPull();
+    addPurchaseEntry();
+}
+
+// ============================
+// 管理後台：內部分頁切換
+// ============================
+function switchAdminTab(tab, btn){
+    document.querySelectorAll('#adminInnerTabBar .tab-btn').forEach(function(b){ b.className = 'tab-btn'; });
+    if(tab === 'purchase'){
+        btn.className = 'tab-btn active-yellow';
+    } else {
+        btn.className = 'tab-btn active';
+    }
+    document.querySelectorAll('#adminMainPanel > .tab-page').forEach(function(p){ p.classList.remove('show'); });
+    var target = tab === 'purchase' ? document.getElementById('adminTabPurchase') : document.getElementById('adminTabBanner');
+    if(target) target.classList.add('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================
+// 管理後台：Toast 提示
+// ============================
+function showToast(msg, isError){
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (isError ? ' error' : '');
+    t.style.display = 'block';
+    requestAnimationFrame(function(){
+        t.classList.add('show');
+    });
+    setTimeout(function(){
+        t.classList.remove('show');
+        setTimeout(function(){ t.style.display = 'none'; }, 300);
+    }, 3000);
+}
+
+// ============================
+// 管理後台：必填欄位跳轉 + 閃爍提示
+// ============================
+function focusField(id, msg){
+    var el = document.getElementById(id);
+    focusEl(el, msg);
+}
+function focusEl(el, msg){
+    showToast(msg, true);
+    if(!el) return;
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+    el.focus();
+    el.style.transition = 'box-shadow .2s';
+    el.style.boxShadow = '0 0 0 3px rgba(252,165,165,.6)';
+    setTimeout(function(){ el.style.boxShadow = ''; }, 3000);
+}
+
+// ============================
+// 管理後台：已填欄位高亮
+// ============================
+function checkHasValue(el){
+    if(el.type === 'checkbox') return;
+    if(el.value && el.value.trim() !== '' && el.value !== '0'){
+        el.classList.add('has-value');
+    } else {
+        el.classList.remove('has-value');
+    }
+}
+document.addEventListener('input', function(e){
+    if(e.target.matches('.form-group input, .form-group select, .form-group textarea')){
+        checkHasValue(e.target);
+    }
+});
+document.addEventListener('change', function(e){
+    if(e.target.matches('.form-group input, .form-group select, .form-group textarea')){
+        checkHasValue(e.target);
+    }
+});
+
+// ============================
+// 管理後台：日期框
+// ============================
+document.addEventListener('click', function(e){
+    // 點擊 datetime-local 自動帶入現在時間並開啟日曆
+    if(e.target.matches('input[type="datetime-local"]')){
+        if(!e.target.value){
+            var now = new Date();
+            var pad = function(n){ return n < 10 ? '0'+n : n; };
+            e.target.value = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())
+                +'T'+pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+            checkHasValue(e.target);
+        }
+        e.target.showPicker();
+    }
+    // 點擊管理後台的日期欄位，如果還沒有值就帶入今天，並開啟日曆
+    if(e.target.matches('#tabAdmin input[type="date"]')){
+        if(!e.target.value){
+            var now = new Date();
+            var pad = function(n){ return n < 10 ? '0'+n : n; };
+            e.target.value = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
+            checkHasValue(e.target);
+        }
+        e.target.showPicker();
+    }
+});
+// 只限制管理後台內的日期欄位，不影響趨勢圖和課金紀錄的日期篩選
+document.addEventListener('keydown', function(e){
+    if(e.target.matches('#tabAdmin input[type="date"]')){
+        e.preventDefault();
+    }
+});
+document.addEventListener('change', function(e){
+    var from = document.getElementById('fDateFrom');
+    var to = document.getElementById('fDateTo');
+    if(!from || !to) return;
+    if(e.target === from && to.value && from.value > to.value){
+        to.value = from.value; checkHasValue(to);
+    }
+    if(e.target === to && from.value && to.value < from.value){
+        from.value = to.value; checkHasValue(from);
+    }
+});
+
+// ============================
+// 管理後台：卡面清單管理
+// ============================
+var charIconMap = {'⭐️':'沈星回','🍐':'黎深','🐟':'祁煜','🐦‍⬛':'秦徹','🍎':'夏以晝'};
+var stdNames = {'⭐️':'常駐星星','🍐':'常駐小梨','🐟':'常駐小魚','🐦‍⬛':'常駐烏鴉','🍎':'常駐哥哥'};
+var charOptions = Object.entries(charIconMap).map(function(e){ return '<option value="'+e[0]+'">'+e[0]+' '+e[1]+'</option>'; }).join('');
+
+function addCard(){
+    var div = document.createElement('div');
+    div.className = 'card-entry';
+    div.innerHTML = '<select class="cardChar"><option value="" disabled selected hidden>角色</option>'+charOptions+'</select>'
+        +'<input type="text" class="cardName" placeholder="卡面名（例：霧海離歌）">'
+        +'<button type="button" class="card-del" onclick="removeCard(this)">✕</button>';
+    document.getElementById('cardsList').appendChild(div);
+    div.querySelector('.cardChar').addEventListener('change', updatePullCardOptions);
+    div.querySelector('.cardName').addEventListener('input', updatePullCardOptions);
+    updateCardDeleteBtns();
+}
+
+function removeCard(btn){
+    var entries = document.querySelectorAll('#cardsList .card-entry');
+    if(entries.length <= 1){ showToast('至少要保留一張卡面', true); return; }
+    btn.parentElement.remove();
+    updatePullCardOptions();
+    updateCardDeleteBtns();
+}
+
+function updateCardDeleteBtns(){
+    var entries = document.querySelectorAll('#cardsList .card-entry');
+    entries.forEach(function(entry){
+        var btn = entry.querySelector('.card-del');
+        btn.style.display = entries.length <= 1 ? 'none' : '';
+    });
+}
+
+function getCardsList(){
+    var entries = document.querySelectorAll('#cardsList .card-entry');
+    var cards = [];
+    entries.forEach(function(entry){
+        var icon = entry.querySelector('.cardChar').value;
+        var name = entry.querySelector('.cardName').value.trim();
+        if(icon && name){
+            cards.push({ icon:icon, char:charIconMap[icon], fullName:charIconMap[icon]+'·'+name });
+        }
+    });
+    return cards;
+}
+
+var extraIcons = ['📸','👔','🎲'];
+
+function updatePullCardOptions(){
+    var cards = getCardsList();
+    document.querySelectorAll('#pullsList .pull-entry').forEach(function(entry){
+        var select = entry.querySelector('.pIcon');
+        var nameSelect = entry.querySelector('.pName');
+        if(nameSelect.tagName === 'SELECT' && !nameSelect.readOnly){
+            var currentVal = nameSelect.value;
+            var icon = select.value;
+            var opts = '<option value="" disabled selected hidden>— 選擇卡面 —</option>';
+            if(icon && !extraIcons.includes(icon)){
+                cards.filter(function(c){ return c.icon === icon; }).forEach(function(c){
+                    opts += '<option value="'+c.fullName+'">'+c.fullName+'</option>';
+                });
+                if(stdNames[icon]){
+                    opts += '<option value="'+stdNames[icon]+'">'+stdNames[icon]+'（常駐）</option>';
+                }
+                opts += '<option value="__custom__">自行輸入...</option>';
+            }
+            nameSelect.innerHTML = opts;
+            if(currentVal) nameSelect.value = currentVal;
+        }
+    });
+}
+
+// ============================
+// 管理後台：載入現有資料列表
+// ============================
+var dataListShown = 5;
+
+function renderAdminDataList(){
+    if(typeof banners === 'undefined') return;
+    var el = document.getElementById('dataList');
+    if(!el) return;
+    document.getElementById('bannerCount').textContent = banners.length;
+    var h = '';
+    var count = 0;
+    for(var i = banners.length - 1; i >= 0; i--){
+        count++;
+        var hidden = count > dataListShown ? ' style="display:none"' : '';
+        var b = banners[i];
+        var pullCount = b.pulls ? b.pulls.length : 0;
+        var totalDia = b.pulls ? b.pulls.reduce(function(s,p){return s+p.dia;},0) : 0;
+        h += '<div class="data-item" data-idx="'+count+'"'+hidden+'>'
+            +'<div><span class="name">'+(i+1)+'. 【'+b.name+'】</span>'
+            +'<span class="meta" style="margin-left:8px">'+(b.tag||'')+'</span>'
+            +(b.skip ? '<span style="color:var(--red);font-size:.75em;margin-left:6px">忘記抽</span>' : '')
+            +'</div>'
+            +'<div class="meta">'+b.date+' | '+(b.type||'-')+' | '+pullCount+' 筆'+(b.skip ? '' : ' | 鑽 '+totalDia.toLocaleString())+' | 禮 '+(b.gift||0).toLocaleString()+'</div>'
+            +'</div>';
+    }
+    if(banners.length > 5){
+        h += '<div id="showMoreWrap" style="text-align:center;margin-top:12px;display:flex;gap:10px;justify-content:center">';
+        if(banners.length > dataListShown) h += '<button class="btn btn-accent" onclick="showMoreData()">顯示更多（還有 '+(banners.length - dataListShown)+' 筆）</button>';
+        if(dataListShown > 5) h += '<button class="btn" onclick="collapseData()">收合</button>';
+        h += '</div>';
+    }
+    el.innerHTML = h;
+}
+
+function updateDataButtons(){
+    var total = banners.length;
+    var wrap = document.getElementById('showMoreWrap');
+    if(!wrap) return;
+    var left = total - dataListShown;
+    var h = '';
+    if(left > 0) h += '<button class="btn btn-accent" onclick="showMoreData()">顯示更多（還有 '+left+' 筆）</button>';
+    if(dataListShown > 5) h += '<button class="btn" onclick="collapseData()">收合</button>';
+    wrap.innerHTML = h;
+}
+
+function showMoreData(){
+    dataListShown = Math.min(dataListShown + 5, banners.length);
+    document.querySelectorAll('#dataList .data-item').forEach(function(item){
+        var idx = parseInt(item.dataset.idx);
+        item.style.display = idx <= dataListShown ? '' : 'none';
+    });
+    updateDataButtons();
+}
+
+function collapseData(){
+    dataListShown = 5;
+    document.querySelectorAll('#dataList .data-item').forEach(function(item){
+        var idx = parseInt(item.dataset.idx);
+        item.style.display = idx <= 5 ? '' : 'none';
+    });
+    updateDataButtons();
+}
+
+// ============================
+// 管理後台：出卡紀錄管理
+// ============================
+var pullCount = 0;
+
+function addPull(){
+    var prevAt = 0;
+    var lastEntry = document.querySelector('#pullsList .pull-entry:last-child');
+    if(lastEntry){
+        prevAt = parseInt(lastEntry.querySelector('.pAt').value) || 0;
+    }
+    pullCount++;
+    var displayNum = document.querySelectorAll('#pullsList .pull-entry').length + 1;
+    var div = document.createElement('div');
+    div.className = 'pull-entry';
+    div.id = 'pull_' + pullCount;
+    div.innerHTML = '<span class="pull-num">#'+displayNum+'</span>'
+        +'<div class="form-row"><div class="form-group"><label>角色</label>'
+        +'<select class="pIcon" onchange="syncExtra(this)"><option value="" disabled selected hidden>— 選擇 —</option>'
+        +'<option value="⭐️">⭐️ 沈星回</option><option value="🍐">🍐 黎深</option>'
+        +'<option value="🐟">🐟 祁煜</option><option value="🐦‍⬛">🐦‍⬛ 秦徹</option>'
+        +'<option value="🍎">🍎 夏以晝</option>'
+        +'<option value="📸">📸 拍照動作(加抽)</option><option value="👔">👔 拿衣服(加抽)</option><option value="🎲">🎲 未出五星(加抽)</option>'
+        +'</select></div>'
+        +'<div class="form-group" style="flex:2"><label>卡名</label><select class="pName"><option value="" disabled selected hidden>— 先選角色 —</option></select></div></div>'
+        +'<div class="form-row" style="gap:10px">'
+        +'<div class="pull-cell"><span class="pull-cell-tag">累計抽數</span><div class="qty-row pull-qty-row"><button type="button" class="qty-btn minus" onclick="pullQtyChange(this,\'pAt\',-10)">−</button><input type="number" class="pAt" value="'+prevAt+'" min="0" oninput="sanitizeNum(this)"><button type="button" class="qty-btn plus" onclick="pullQtyChange(this,\'pAt\',10)">+</button></div><span class="pull-cell-unit">每次 ±10</span></div>'
+        +'<div class="pull-cell"><span class="pull-cell-tag">花費鑽石</span><div class="qty-row pull-qty-row"><button type="button" class="qty-btn minus" onclick="pullQtyChange(this,\'pDia\',-150)">−</button><input type="number" class="pDia" value="0" min="0" oninput="sanitizeNum(this)"><button type="button" class="qty-btn plus" onclick="pullQtyChange(this,\'pDia\',150)">+</button></div><span class="pull-cell-unit">每次 ±150</span></div></div>'
+        +'<div class="form-row"><div class="check-row">'
+        +'<label class="check-item"><input type="checkbox" class="pStd" onchange="guardStdCheckbox(this)"> 常駐</label>'
+        +'<label class="check-item"><input type="checkbox" class="pDbl" onchange="this.parentElement.classList.toggle(\'active\',this.checked)"> 雙蛋黃</label>'
+        +'<label class="check-item"><input type="checkbox" class="pBox" onchange="this.parentElement.classList.toggle(\'active\',this.checked)"> 開盒子</label>'
+        +'<label class="check-item"><input type="checkbox" class="pExtra" onchange="guardExtraCheckbox(this)"> 加抽</label>'
+        +'</div></div>'
+        +'<div style="text-align:right;margin-top:6px"><button class="btn btn-danger" onclick="removePull('+pullCount+')" style="font-size:.75em;padding:4px 12px">刪除此筆</button></div>';
+    document.getElementById('pullsList').appendChild(div);
+    updateDeleteBtns();
+}
+
+function removePull(id){
+    var el = document.getElementById('pull_' + id);
+    if(el) el.remove();
+    var remaining = document.querySelectorAll('#pullsList .pull-entry');
+    remaining.forEach(function(entry, i){
+        entry.querySelector('.pull-num').textContent = '#' + (i + 1);
+        var pAtInput = entry.querySelector('.pAt');
+        var curVal = parseInt(pAtInput.value) || 0;
+        var minVal = getPrevPullAt(entry);
+        if(curVal < minVal){ pAtInput.value = minVal; pAtInput.classList.toggle('has-value', minVal > 0); }
+    });
+    updateDeleteBtns();
+}
+
+function updateDeleteBtns(){
+    var entries = document.querySelectorAll('#pullsList .pull-entry');
+    entries.forEach(function(entry){
+        var btn = entry.querySelector('.btn-danger');
+        btn.style.display = entries.length <= 1 ? 'none' : '';
+    });
+}
+
+// ============================
+// 管理後台：抽卡狀態切換
+// ============================
+var currentPullMode = 'hasStar';
+
+function setPullMode(mode){
+    currentPullMode = mode;
+    document.getElementById('modeHasStar').className = 'check-item' + (mode==='hasStar' ? ' active' : '');
+    document.getElementById('modeSkip').className = 'check-item' + (mode==='skip' ? ' active-red' : '');
+    document.getElementById('skipNotice').style.display = mode==='skip' ? 'block' : 'none';
+    document.getElementById('pullsSection').style.display = mode==='hasStar' ? 'block' : 'none';
+    document.getElementById('giftSection').style.display = mode==='skip' ? 'none' : 'block';
+}
+
+// ============================
+// 管理後台：角色選單連動
+// ============================
+function syncExtra(select){
+    var entry = select.closest('.pull-entry');
+    var icon = select.value;
+    var isExtra = extraIcons.includes(icon);
+    var hasValue = !!icon;
+    var cbExtra = entry.querySelector('.pExtra');
+    var lblExtra = cbExtra.parentElement;
+    var cbStd = entry.querySelector('.pStd');
+    var cbDbl = entry.querySelector('.pDbl');
+    var cbBox = entry.querySelector('.pBox');
+    var lblStd = cbStd.parentElement;
+    var lblDbl = cbDbl.parentElement;
+    var lblBox = cbBox.parentElement;
+    var nameEl = entry.querySelector('.pName');
+    var nameWrap = nameEl.parentElement;
+    var extraNames = {'📸':'拍照動作(加抽)','👔':'拿衣服(加抽)','🎲':'未出五星(加抽)'};
+    if(isExtra){
+        nameWrap.innerHTML = '<label>卡名</label><input type="text" class="pName" value="'+extraNames[icon]+'" readonly>';
+        cbExtra.checked = true; lblExtra.classList.add('active'); lblExtra.style.display = '';
+        cbStd.checked = false; lblStd.classList.remove('active'); lblStd.style.display = 'none';
+        cbDbl.checked = false; lblDbl.classList.remove('active'); lblDbl.style.display = 'none';
+        cbBox.checked = false; lblBox.classList.remove('active'); lblBox.style.display = 'none';
+    } else if(hasValue){
+        var cards = getCardsList();
+        var opts = '<option value="" disabled selected hidden>— 選擇卡面 —</option>';
+        cards.filter(function(c){ return c.icon === icon; }).forEach(function(c){
+            opts += '<option value="'+c.fullName+'">'+c.fullName+'</option>';
+        });
+        if(stdNames[icon]) opts += '<option value="'+stdNames[icon]+'">'+stdNames[icon]+'（常駐）</option>';
+        opts += '<option value="__custom__">自行輸入...</option>';
+        nameWrap.innerHTML = '<label>卡名</label><select class="pName" onchange="onPullNameChange(this)">'+opts+'</select>';
+        entry.querySelector('.pName').addEventListener('change', function(){
+            var isStd = this.value.startsWith('常駐');
+            cbStd.checked = isStd; cbStd.parentElement.classList.toggle('active', isStd);
+        });
+        cbExtra.checked = false; lblExtra.classList.remove('active'); lblExtra.style.display = 'none';
+        lblStd.style.display = ''; lblDbl.style.display = ''; lblBox.style.display = '';
+    } else {
+        nameWrap.innerHTML = '<label>卡名</label><select class="pName"><option value="" disabled selected hidden>— 先選角色 —</option></select>';
+        lblExtra.style.display = ''; lblStd.style.display = ''; lblDbl.style.display = ''; lblBox.style.display = '';
+    }
+}
+
+function guardStdCheckbox(cb){
+    var entry = cb.closest('.pull-entry');
+    if(!entry){ cb.parentElement.classList.toggle('active', cb.checked); return; }
+    var pNameEl = entry.querySelector('.pName');
+    var pNameVal = pNameEl ? pNameEl.value : '';
+    if(!cb.checked && pNameVal.startsWith('常駐')){
+        cb.checked = true;
+        showToast('常駐角色不能取消「常駐」標籤', true);
+    }
+    cb.parentElement.classList.toggle('active', cb.checked);
+}
+
+function guardExtraCheckbox(cb){
+    var entry = cb.closest('.pull-entry');
+    if(!entry){ cb.parentElement.classList.toggle('active', cb.checked); return; }
+    var pIcon = entry.querySelector('.pIcon').value;
+    if(!cb.checked && extraIcons.includes(pIcon)){
+        cb.checked = true;
+        showToast('加抽角色不能取消「加抽」標籤', true);
+    }
+    cb.parentElement.classList.toggle('active', cb.checked);
+}
+
+function onPullNameChange(sel){
+    var entry = sel.closest('.pull-entry');
+    if(sel.value === '__custom__'){
+        var wrap = sel.parentElement;
+        wrap.innerHTML = '<label>卡名</label><input type="text" class="pName" placeholder="自行輸入卡名">';
+        wrap.querySelector('.pName').focus();
+        if(entry){
+            var cbStd = entry.querySelector('.pStd');
+            cbStd.checked = false; cbStd.parentElement.classList.remove('active');
+        }
+        return;
+    }
+    if(entry){
+        var cbStd = entry.querySelector('.pStd');
+        var isStd = sel.value.startsWith('常駐');
+        cbStd.checked = isStd; cbStd.parentElement.classList.toggle('active', isStd);
+    }
+}
+
+// ============================
+// 管理後台：加減按鈕
+// ============================
+function getPrevPullAt(entry){
+    var prev = entry.previousElementSibling;
+    if(!prev || !prev.classList.contains('pull-entry')) return 0;
+    return parseInt(prev.querySelector('.pAt').value) || 0;
+}
+
+function sanitizeNum(el){
+    el.value = el.value.replace(/[^0-9]/g, '');
+    var val = parseInt(el.value) || 0;
+    if(val < 0) val = 0;
+    if(el.classList.contains('pAt')){
+        var entry = el.closest('.pull-entry');
+        if(entry){
+            var minVal = getPrevPullAt(entry);
+            if(val < minVal) val = minVal;
+        }
+    }
+    el.value = val;
+    el.classList.toggle('has-value', val > 0);
+}
+
+function pullQtyChange(btn, cls, delta){
+    var row = btn.closest('.qty-row');
+    var input = row.querySelector('.' + cls);
+    var val = (parseInt(input.value) || 0) + delta;
+    if(val < 0) val = 0;
+    if(cls === 'pAt'){
+        var entry = input.closest('.pull-entry');
+        if(entry){
+            var minVal = getPrevPullAt(entry);
+            if(val < minVal) val = minVal;
+        }
+    }
+    input.value = val;
+    input.classList.toggle('has-value', val > 0);
+}
+
+function qtyChange(id, delta){
+    var input = document.getElementById(id);
+    var val = (parseInt(input.value) || 0) + delta;
+    if(val < 0) val = 0;
+    input.value = val;
+    input.classList.toggle('has-value', val > 0);
+    calcGift();
+}
+
+// ============================
+// 管理後台：禮包計算
+// ============================
+function calcGift(){
+    var prices = [15, 30, 150, 290, 320, 390, 590, 820, 1690];
+    var ids = ['g15','g30','g150','g290','g320','g390','g590','g820','g1690'];
+    var total = 0, parts = [];
+    ids.forEach(function(id, i){
+        var qty = parseInt(document.getElementById(id).value) || 0;
+        if(qty > 0){ total += prices[i] * qty; parts.push(prices[i]+'\u00d7'+qty); }
+    });
+    document.getElementById('giftFormula').textContent = parts.length ? parts.join('+') : '-';
+    document.getElementById('giftTotal').textContent = total.toLocaleString();
+}
+
+// ============================
+// 管理後台：產生程式碼
+// ============================
+function fmtDate(isoStr){
+    if(!isoStr) return '';
+    var parts2 = isoStr.split('T');
+    var dParts = parts2[0].split('-');
+    var result = dParts[0] + '/' + parseInt(dParts[1]) + '/' + parseInt(dParts[2]);
+    if(parts2[1]){
+        result += ' ' + (parts2[1].split(':').length < 3 ? parts2[1] + ':00' : parts2[1]);
+    }
+    return result;
+}
+
+function shortDate(isoStr){
+    if(!isoStr) return '';
+    var dParts = isoStr.split('-');
+    return parseInt(dParts[1]) + '/' + parseInt(dParts[2]);
+}
+
+function buildBannerObj(){
+    var name = document.getElementById('fName').value.trim();
+    var tag = document.getElementById('fTag').value.trim();
+    var dateFrom = document.getElementById('fDateFrom').value;
+    var dateTo = document.getElementById('fDateTo').value;
+    var type = document.getElementById('fType').value;
+    var partner = document.getElementById('fPartner').value.trim();
+    var cards = getCardsList().map(function(c){ return c.fullName; });
+    var skip = (currentPullMode === 'skip');
+
+    if(!name){ focusField('fName','請填寫卡池名稱'); return null; }
+    if(!dateFrom){ focusField('fDateFrom','請填寫起始日期'); return null; }
+    if(!dateTo){ focusField('fDateTo','請填寫結束日期'); return null; }
+    if(!type){ focusField('fType','請選擇分類'); return null; }
+    if(cards.length === 0){
+        var cardEntries = document.querySelectorAll('#cardsList .card-entry');
+        var hasIncomplete = false;
+        cardEntries.forEach(function(entry){
+            var icon = entry.querySelector('.cardChar').value;
+            var cname = entry.querySelector('.cardName').value.trim();
+            if(icon && !cname){ focusEl(entry.querySelector('.cardName'),'卡面名稱未填'); hasIncomplete = true; }
+            else if(!icon && cname){ focusEl(entry.querySelector('.cardChar'),'卡面角色未選'); hasIncomplete = true; }
+        });
+        if(!hasIncomplete) showToast('請至少新增一張卡面', true);
+        return null;
+    }
+
+    var fromFmt = fmtDate(dateFrom);
+    var toShort = shortDate(dateTo);
+    var fy = dateFrom.split('-')[0];
+    var ty = dateTo.split('-')[0];
+    var dateStr = fy === ty ? fromFmt + '-' + toShort : fromFmt + '-' + fmtDate(dateTo);
+
+    if(skip){
+        return { date:dateStr, name:name, tag:tag, type:type, cards:cards, pulls:[], gift:0, skip:true, giftFormula:'' };
+    }
+
+    var pullEntries = document.querySelectorAll('#pullsList .pull-entry');
+    var pulls = [];
+    var hasError = false;
+    var prevPullAt = 0;
+    pullEntries.forEach(function(entry){
+        if(hasError) return;
+        var pNameEl = entry.querySelector('.pName');
+        var pName = pNameEl.value.trim();
+        if(!pName || pName === '__custom__') return;
+        var pIcon = entry.querySelector('.pIcon').value;
+        if(!pIcon){ focusEl(entry.querySelector('.pIcon'),'出卡紀錄有未選擇角色的欄位'); hasError = true; return; }
+        var pAt = parseInt(entry.querySelector('.pAt').value) || 0;
+        var pDia = parseInt(entry.querySelector('.pDia').value) || 0;
+        if(!pAt){ focusEl(entry.querySelector('.pAt'),'「'+pName+'」的累計抽數不能是 0'); hasError = true; return; }
+        if(pAt < prevPullAt){ focusEl(entry.querySelector('.pAt'),'「'+pName+'」的累計抽數不能小於上一筆（'+prevPullAt+'）'); hasError = true; return; }
+        prevPullAt = pAt;
+
+        var pStd = entry.querySelector('.pStd').checked && entry.querySelector('.pStd').parentElement.style.display !== 'none';
+        var pDbl = entry.querySelector('.pDbl').checked && entry.querySelector('.pDbl').parentElement.style.display !== 'none';
+        var pBox = entry.querySelector('.pBox').checked && entry.querySelector('.pBox').parentElement.style.display !== 'none';
+        var pExtra = entry.querySelector('.pExtra').checked && entry.querySelector('.pExtra').parentElement.style.display !== 'none';
+
+        var p = {n:pName, icon:pIcon, at:pAt, dia:pDia};
+        if(pStd || pName.startsWith('常駐')) p.std = true;
+        if(pDbl) p.dbl = true;
+        if(pBox) p.box = true;
+        if(pExtra || pIcon==='📸' || pIcon==='👔' || pIcon==='🎲') p.extra = true;
+        pulls.push(p);
+    });
+    if(hasError) return null;
+    if(pulls.length === 0){ showToast('請至少填寫一筆出卡紀錄', true); return null; }
+
+    var giftFormulaText = document.getElementById('giftFormula').textContent;
+    var giftTotal = parseInt(document.getElementById('giftTotal').textContent.replace(/,/g,'')) || 0;
+
+    var obj = { date:dateStr, name:name, tag:tag, type:type };
+    if(partner) obj.partner = partner;
+    obj.cards = cards;
+    obj.pulls = pulls;
+    obj.giftFormula = giftFormulaText === '-' ? '' : giftFormulaText;
+    obj.gift = giftTotal;
+    return obj;
+}
+
+function objToCode(obj){
+    if(!obj) return '';
+    var lines = ['  {'];
+    lines.push("    date:'"+obj.date+"', name:'"+obj.name+"', tag:'"+obj.tag+"', type:'"+obj.type+"',");
+    if(obj.skip){
+        lines.push("    cards:["+obj.cards.map(function(c){return "'"+c+"'";}).join(',')+"], pulls:[], gift:0, skip:true, giftFormula:''");
+        lines.push('  },');
+        return lines.join('\n');
+    }
+    if(obj.partner) lines.push("    partner:'"+obj.partner+"',");
+    lines.push("    cards:["+obj.cards.map(function(c){return "'"+c+"'";}).join(',')+"],");
+    lines.push('    pulls:[');
+    obj.pulls.forEach(function(p){
+        var parts = ["n:'"+p.n+"'", "icon:'"+p.icon+"'", "at:"+p.at, "dia:"+p.dia];
+        if(p.std) parts.push('std:true');
+        if(p.dbl) parts.push('dbl:true');
+        if(p.box) parts.push('box:true');
+        if(p.extra) parts.push('extra:true');
+        lines.push('      {' + parts.join(',') + '},');
+    });
+    lines.push('    ],');
+    lines.push("    giftFormula:'"+(obj.giftFormula||'')+"', gift:"+(obj.gift||0));
+    lines.push('  },');
+    return lines.join('\n');
+}
+
+function generateCode(){
+    var obj = buildBannerObj();
+    if(!obj) return;
+    var code = objToCode(obj);
+    document.getElementById('codeOutput').textContent = code;
+    document.getElementById('previewSection').style.display = 'block';
+    document.getElementById('previewSection').scrollIntoView({behavior:'smooth'});
+    showToast('程式碼已產生');
+}
+
+// ============================
+// 管理後台：儲存到 data.js
+// ============================
+async function saveToData(){
+    var obj = buildBannerObj();
+    if(!obj) return;
+    var code = objToCode(obj);
+    try {
+        var resp = await fetch('data.js?' + Date.now());
+        var content = await resp.text();
+        var lastBracket = content.lastIndexOf('];');
+        if(lastBracket === -1){ showToast('data.js 格式異常，找不到 ];', true); return; }
+        var newContent = content.substring(0, lastBracket) + code + '\n' + content.substring(lastBracket);
+        var blob = new Blob([newContent], {type:'text/javascript;charset=utf-8'});
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'data.js';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast('已下載更新後的 data.js，請替換原檔案');
+    } catch(e){
+        showToast('將以下載方式提供更新的 data.js');
+        document.getElementById('codeOutput').textContent = code;
+        document.getElementById('previewSection').style.display = 'block';
+        document.getElementById('previewSection').scrollIntoView({behavior:'smooth'});
+    }
+}
+
+// ============================
+// 管理後台：複製 & 清空
+// ============================
+function copyCode(){
+    var code = document.getElementById('codeOutput').textContent;
+    try {
+        var ta = document.createElement('textarea');
+        ta.value = code; ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        document.execCommand('copy'); ta.remove();
+        showToast('已複製到剪貼簿');
+    } catch(e){ showToast('複製失敗，請手動選取複製', true); }
+}
+
+function clearForm(){
+    document.getElementById('fName').value = '';
+    document.getElementById('fTag').value = '';
+    document.getElementById('fDateFrom').value = '';
+    document.getElementById('fDateTo').value = '';
+    document.getElementById('fType').value = '';
+    document.getElementById('fPartner').value = '';
+    document.getElementById('cardsList').innerHTML = '';
+    addCard();
+    setPullMode('hasStar');
+    document.getElementById('pullsList').innerHTML = '';
+    pullCount = 0;
+    addPull();
+    ['g15','g30','g150','g290','g320','g390','g590','g820','g1690'].forEach(function(id){ document.getElementById(id).value = '0'; });
+    calcGift();
+    document.getElementById('previewSection').style.display = 'none';
+    document.querySelectorAll('.has-value').forEach(function(el){ el.classList.remove('has-value'); });
+    showToast('表單已清空');
+}
+
+// ============================
+// 管理後台：課金紀錄管理
+// ============================
+var purchaseListShown = 5;
+
+function renderAdminPurchaseList(){
+    if(typeof purchases === 'undefined') return;
+    var el = document.getElementById('purchaseList');
+    if(!el) return;
+    document.getElementById('purchaseCount').textContent = purchases.length;
+    if(purchases.length === 0){
+        el.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:20px;font-size:.9em">尚無課金紀錄</div>';
+        return;
+    }
+    var categoryColors = {'月卡':'#6ee7b7','密約':'#fb923c','卡池禮包':'#fbbf24','鑽石':'#a78bfa','其他':'#60a5fa'};
+    var h = '';
+    var count = 0;
+    for(var i = purchases.length - 1; i >= 0; i--){
+        count++;
+        var hidden = count > purchaseListShown ? ' style="display:none"' : '';
+        var p = purchases[i];
+        var catColor = categoryColors[p.category] || 'var(--dim)';
+        h += '<div class="data-item" data-pidx="'+count+'"'+hidden+'>'
+            +'<div>'
+            +'<span style="color:'+catColor+';font-size:.75em;padding:2px 8px;border-radius:4px;border:1px solid '+catColor+';margin-right:8px">'+p.category+'</span>'
+            +'<span class="name">'+p.name+'</span>'
+            +(p.note ? '<span class="meta" style="margin-left:8px">'+p.note+'</span>' : '')
+            +'</div>'
+            +'<div class="meta">'+p.date+' | <span style="color:var(--yellow);font-weight:600">'+p.amount.toLocaleString()+' 元</span></div>'
+            +'</div>';
+    }
+    if(purchases.length > 5){
+        h += '<div id="purchaseShowMoreWrap" style="text-align:center;margin-top:12px;display:flex;gap:10px;justify-content:center">';
+        if(purchases.length > purchaseListShown) h += '<button class="btn" style="border-color:var(--yellow);color:var(--yellow)" onclick="showMorePurchases()">顯示更多（還有 '+(purchases.length - purchaseListShown)+' 筆）</button>';
+        if(purchaseListShown > 5) h += '<button class="btn" onclick="collapsePurchases()">收合</button>';
+        h += '</div>';
+    }
+    el.innerHTML = h;
+}
+
+function showMorePurchases(){
+    purchaseListShown = Math.min(purchaseListShown + 5, purchases.length);
+    document.querySelectorAll('#purchaseList .data-item').forEach(function(item){
+        var idx = parseInt(item.dataset.pidx);
+        item.style.display = idx <= purchaseListShown ? '' : 'none';
+    });
+    updatePurchaseButtons();
+}
+
+function collapsePurchases(){
+    purchaseListShown = 5;
+    document.querySelectorAll('#purchaseList .data-item').forEach(function(item){
+        var idx = parseInt(item.dataset.pidx);
+        item.style.display = idx <= 5 ? '' : 'none';
+    });
+    updatePurchaseButtons();
+}
+
+function updatePurchaseButtons(){
+    var wrap = document.getElementById('purchaseShowMoreWrap');
+    if(!wrap) return;
+    var left = purchases.length - purchaseListShown;
+    var h = '';
+    if(left > 0) h += '<button class="btn" style="border-color:var(--yellow);color:var(--yellow)" onclick="showMorePurchases()">顯示更多（還有 '+left+' 筆）</button>';
+    if(purchaseListShown > 5) h += '<button class="btn" onclick="collapsePurchases()">收合</button>';
+    wrap.innerHTML = h;
+}
+
+// ============================
+// 管理後台：課金項目新增/刪除
+// ============================
+var pAmtPresets = {
+    '月卡': [150],
+    '密約': [190, 320, 490],
+    '卡池禮包': [15, 30, 150, 290, 320, 390, 590, 820, 1690],
+    '鑽石': [30, 150, 220, 490, 890, 1490, 2990],
+    '其他': [15, 30, 45, 90, 120, 150, 220, 320, 648, 1680]
+};
+
+function updateAmtPresets(entry){
+    if(!entry) return;
+    var catSel = entry.querySelector('.pe-category');
+    var wrap = entry.querySelector('.pe-amt-presets');
+    if(!catSel || !wrap) return;
+    var cat = catSel.value;
+    var presets = pAmtPresets[cat] || [30, 150, 320, 490];
+    var h = '';
+    presets.forEach(function(amt){
+        h += '<span class="check-item" onclick="setPAmt(this,'+amt+')" style="padding:5px 12px;font-size:.82em;cursor:pointer">$'+amt+'</span>';
+    });
+    wrap.innerHTML = h;
+    highlightAmtPreset(entry);
+}
+
+function setPAmt(el, amt){
+    var entry = el.closest('.purchase-entry');
+    var input = entry.querySelector('.pe-amount');
+    input.value = amt;
+    input.classList.toggle('has-value', amt > 0);
+    highlightAmtPreset(entry);
+}
+
+function highlightAmtPreset(entry){
+    if(!entry) return;
+    var input = entry.querySelector('.pe-amount');
+    var wrap = entry.querySelector('.pe-amt-presets');
+    if(!input || !wrap) return;
+    var val = parseInt(input.value) || 0;
+    wrap.querySelectorAll('.check-item').forEach(function(btn){
+        var amt = parseInt(btn.textContent.replace('$',''));
+        btn.classList.toggle('active', amt === val);
+    });
+}
+
+function pAmtChange(btn, delta){
+    var row = btn.closest('.pull-qty-row');
+    var input = row.querySelector('.pe-amount');
+    var val = (parseInt(input.value) || 0) + delta;
+    if(val < 0) val = 0;
+    input.value = val;
+    input.classList.toggle('has-value', val > 0);
+    highlightAmtPreset(btn.closest('.purchase-entry'));
+}
+
+function sanitizePAmt(input){
+    input.value = input.value.replace(/[^0-9]/g, '');
+    var val = parseInt(input.value) || 0;
+    if(val < 0) val = 0;
+    input.value = val;
+    input.classList.toggle('has-value', val > 0);
+    highlightAmtPreset(input.closest('.purchase-entry'));
+}
+
+var peCount = 0;
+
+function addPurchaseEntry(){
+    var prevDate = '';
+    var lastEntry = document.querySelector('#purchaseEntries .purchase-entry:last-child');
+    if(lastEntry){
+        var prevDateEl = lastEntry.querySelector('.pe-date');
+        if(prevDateEl) prevDate = prevDateEl.value;
+    }
+    peCount++;
+    var displayNum = document.querySelectorAll('#purchaseEntries .purchase-entry').length + 1;
+    var div = document.createElement('div');
+    div.className = 'purchase-entry';
+    div.id = 'pe_' + peCount;
+    div.innerHTML = '<span class="pull-num">#'+displayNum+'</span>'
+        +'<div class="form-row" style="margin-top:36px">'
+        +'<div class="form-group"><label>日期時間</label><input type="datetime-local" class="pe-date" value="'+prevDate+'" step="1"></div>'
+        +'<div class="form-group"><label>備註（選填）</label><input type="text" class="pe-note" placeholder="選填備註"></div>'
+        +'</div>'
+        +'<div class="form-row">'
+        +'<div class="form-group"><label>分類</label>'
+        +'<select class="pe-category" onchange="checkHasValue(this);onPurchaseCategoryChange(this)">'
+        +'<option value="" disabled selected hidden>— 請選擇 —</option>'
+        +'<option value="月卡">月卡</option><option value="密約">密約</option>'
+        +'<option value="卡池禮包">卡池禮包</option><option value="鑽石">鑽石</option>'
+        +'<option value="其他">其他</option></select></div>'
+        +'<div class="form-group pe-name-wrap"><label>名稱</label><input type="text" class="pe-name" placeholder="先選分類"></div>'
+        +'</div>'
+        +'<div class="form-row"><div class="form-group"><label>金額</label>'
+        +'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">'
+        +'<div class="pull-qty-row"><button type="button" class="qty-btn minus" onclick="pAmtChange(this,-1)">−</button>'
+        +'<input type="number" class="pe-amount" value="" min="0" placeholder="0" oninput="sanitizePAmt(this)" style="width:80px">'
+        +'<button type="button" class="qty-btn plus" onclick="pAmtChange(this,1)">+</button></div>'
+        +'<div class="check-row pe-amt-presets"></div></div>'
+        +'<span style="font-size:.72em;color:var(--text-dim);margin-top:2px">每次 ±1 或點選常用金額</span></div></div>'
+        +'<div style="text-align:right;margin-top:6px"><button class="btn btn-danger" onclick="removePurchaseEntry('+peCount+')" style="font-size:.75em;padding:4px 12px">刪除此筆</button></div>';
+    document.getElementById('purchaseEntries').appendChild(div);
+    if(prevDate){
+        var dateEl = div.querySelector('.pe-date');
+        if(dateEl) checkHasValue(dateEl);
+    }
+    updatePeDeleteBtns();
+}
+
+function removePurchaseEntry(id){
+    var entries = document.querySelectorAll('#purchaseEntries .purchase-entry');
+    if(entries.length <= 1){ showToast('至少要保留一筆課金項目', true); return; }
+    var el = document.getElementById('pe_' + id);
+    if(el) el.remove();
+    var remaining = document.querySelectorAll('#purchaseEntries .purchase-entry');
+    remaining.forEach(function(entry, i){
+        entry.querySelector('.pull-num').textContent = '#' + (i + 1);
+    });
+    updatePeDeleteBtns();
+}
+
+function updatePeDeleteBtns(){
+    var entries = document.querySelectorAll('#purchaseEntries .purchase-entry');
+    entries.forEach(function(entry){
+        var btn = entry.querySelector('.btn-danger');
+        btn.style.display = entries.length <= 1 ? 'none' : '';
+    });
+}
+
+var pCatConfig = {
+    '月卡': { type:'select', options:[ {name:'30天鎏金卡', amount:150} ] },
+    '密約': { type:'select', options:[ {name:'升級版特別密約', amount:490}, {name:'特別密約', amount:320}, {name:'升級特別密約', amount:190} ] },
+    '卡池禮包': { type:'input', defaultName:'', defaultAmount:0 },
+    '鑽石': { type:'select', options:[ {name:'60晶鑽', amount:30}, {name:'300晶鑽', amount:150}, {name:'450晶鑽', amount:220}, {name:'980晶鑽', amount:490}, {name:'1980晶鑽', amount:890}, {name:'3280晶鑽', amount:1490}, {name:'6480晶鑽', amount:2990} ] },
+    '其他': { type:'input', defaultName:'', defaultAmount:0 }
+};
+
+function onPurchaseCategoryChange(selectEl){
+    var entry = selectEl.closest('.purchase-entry');
+    if(!entry) return;
+    var cat = selectEl.value;
+    var wrap = entry.querySelector('.pe-name-wrap');
+    var amountInput = entry.querySelector('.pe-amount');
+    var config = pCatConfig[cat];
+    if(!config) return;
+    if(config.type === 'select'){
+        var opts = config.options.map(function(o, i){
+            var label = o.amount ? o.name + '（$' + o.amount + '）' : o.name;
+            return '<option value="'+o.name+'"'+(i===0?' selected':'')+'>'+label+'</option>';
+        }).join('');
+        wrap.innerHTML = '<label>名稱</label><select class="pe-name" onchange="checkHasValue(this);onPurchaseNameChange(this)">'+opts+'</select>';
+        checkHasValue(wrap.querySelector('.pe-name'));
+        amountInput.value = config.options[0].amount || '';
+        checkHasValue(amountInput);
+    } else {
+        wrap.innerHTML = '<label>名稱</label><input type="text" class="pe-name" placeholder="例：遇歲折春禮。一">';
+        var nameInput = wrap.querySelector('.pe-name');
+        if(config.defaultName){ nameInput.value = config.defaultName; checkHasValue(nameInput); }
+        amountInput.value = config.defaultAmount || '';
+        checkHasValue(amountInput);
+    }
+    updateAmtPresets(entry);
+}
+
+function onPurchaseNameChange(selectEl){
+    var entry = selectEl.closest('.purchase-entry');
+    if(!entry) return;
+    var cat = entry.querySelector('.pe-category').value;
+    var name = selectEl.value;
+    var amountInput = entry.querySelector('.pe-amount');
+    var config = pCatConfig[cat];
+    if(!config || config.type !== 'select') return;
+    var match = config.options.find(function(o){ return o.name === name; });
+    if(match && match.amount){ amountInput.value = match.amount; checkHasValue(amountInput); }
+    highlightAmtPreset(entry);
+}
+
+// ============================
+// 管理後台：課金程式碼
+// ============================
+function buildPurchaseObjs(){
+    var entries = document.querySelectorAll('#purchaseEntries .purchase-entry');
+    var objs = [];
+    var hasError = false;
+    entries.forEach(function(entry, i){
+        if(hasError) return;
+        var dateEl = entry.querySelector('.pe-date');
+        var noteEl = entry.querySelector('.pe-note');
+        var catSel = entry.querySelector('.pe-category');
+        var nameEl = entry.querySelector('.pe-name');
+        var amountEl = entry.querySelector('.pe-amount');
+        var date = dateEl ? dateEl.value : '';
+        var note = noteEl ? noteEl.value.trim() : '';
+        var category = catSel ? catSel.value : '';
+        var name = nameEl ? nameEl.value.trim() : '';
+        var amount = amountEl ? (parseInt(amountEl.value) || 0) : 0;
+        if(!date){ focusEl(dateEl, '第 '+(i+1)+' 筆：請填寫日期'); hasError = true; return; }
+        if(!category){ focusEl(catSel, '第 '+(i+1)+' 筆：請選擇分類'); hasError = true; return; }
+        if(!name){ focusEl(nameEl, '第 '+(i+1)+' 筆：請填寫名稱'); hasError = true; return; }
+        if(!amount){ focusEl(amountEl, '第 '+(i+1)+' 筆：請填寫金額'); hasError = true; return; }
+        var dtParts = date.split('T');
+        var dateParts = dtParts[0].split('-');
+        var dateStr = dateParts[0] + '/' + parseInt(dateParts[1]) + '/' + parseInt(dateParts[2]);
+        if(dtParts[1]){ dateStr += ' ' + (dtParts[1].split(':').length < 3 ? dtParts[1] + ':00' : dtParts[1]); }
+        objs.push({ date:dateStr, category:category, name:name, amount:amount, note:note });
+    });
+    if(hasError) return null;
+    if(objs.length === 0){ showToast('請至少新增一筆課金項目', true); return null; }
+    return objs;
+}
+
+function purchaseObjToCode(obj){
+    if(!obj) return '';
+    var parts = ["date:'"+obj.date+"'", "category:'"+obj.category+"'", "name:'"+obj.name+"'", "amount:"+obj.amount];
+    if(obj.note) parts.push("note:'"+obj.note+"'");
+    return '  {' + parts.join(', ') + '},';
+}
+
+function generatePurchaseCode(){
+    var objs = buildPurchaseObjs();
+    if(!objs) return;
+    var code = objs.map(function(o){ return purchaseObjToCode(o); }).join('\n');
+    document.getElementById('purchaseCodeOutput').textContent = code;
+    document.getElementById('purchasePreviewSection').style.display = 'block';
+    document.getElementById('purchasePreviewSection').scrollIntoView({behavior:'smooth'});
+    showToast('課金紀錄程式碼已產生（共 '+objs.length+' 筆）');
+}
+
+async function savePurchaseToData(){
+    var objs = buildPurchaseObjs();
+    if(!objs) return;
+    var code = objs.map(function(o){ return purchaseObjToCode(o); }).join('\n');
+    try {
+        var resp = await fetch('data.js?' + Date.now());
+        var content = await resp.text();
+        var purchasesStart = content.indexOf('const purchases');
+        if(purchasesStart === -1){ showToast('data.js 中找不到 purchases 陣列', true); return; }
+        var searchFrom = content.indexOf('[', purchasesStart);
+        var bracketEnd = content.indexOf('];', searchFrom);
+        if(bracketEnd === -1){ showToast('data.js 格式異常，找不到 purchases 的 ];', true); return; }
+        var newContent = content.substring(0, bracketEnd) + code + '\n' + content.substring(bracketEnd);
+        var blob = new Blob([newContent], {type:'text/javascript;charset=utf-8'});
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'data.js';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast('已下載更新後的 data.js（共 '+objs.length+' 筆），請替換原檔案');
+    } catch(e){
+        showToast('將以下載方式提供更新的 data.js');
+        document.getElementById('purchaseCodeOutput').textContent = code;
+        document.getElementById('purchasePreviewSection').style.display = 'block';
+        document.getElementById('purchasePreviewSection').scrollIntoView({behavior:'smooth'});
+    }
+}
+
+function copyPurchaseCode(){
+    var code = document.getElementById('purchaseCodeOutput').textContent;
+    try {
+        var ta = document.createElement('textarea');
+        ta.value = code; ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        document.execCommand('copy'); ta.remove();
+        showToast('已複製到剪貼簿');
+    } catch(e){ showToast('複製失敗，請手動選取複製', true); }
+}
+
+function clearPurchaseForm(){
+    document.getElementById('purchaseEntries').innerHTML = '';
+    peCount = 0;
+    addPurchaseEntry();
+    document.getElementById('purchasePreviewSection').style.display = 'none';
+    showToast('課金表單已清空');
+}
 
 // 滑鼠拖曳橫向滾動（電腦版用）
 function enableDragScroll(el){
