@@ -454,8 +454,8 @@
 <button class="back-top" id="btnTop">↑</button>
 <div class="toast" id="toast"></div>
 
-<!-- 載入外部資料檔 -->
-<script src="data.js"></script>
+<!-- 載入外部資料檔（加時間戳防止手機瀏覽器快取舊資料） -->
+<script>document.write('<script src="data.js?' + Date.now() + '"><\/script>');</script>
 <script>
 // ============================
 // 資料定義已移至 data.js

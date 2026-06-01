@@ -789,4 +789,13 @@ const banners = [
     ],
     giftFormula:'30×1+150×3+320×5+390×3', gift:3250
   },
+  {
+    date:'2026/5/22-5/31', name:'愛貓及喵', tag:'小狸花卡', type:'限定',
+    cards:['秦徹·愛貓及喵'],
+    pulls:[
+      {n:'常駐烏鴉',icon:'🐦‍⬛',at:10,dia:0,std:true},
+      {n:'秦徹·愛貓及喵',icon:'🐦‍⬛',at:80,dia:900},
+    ],
+    giftFormula:'15×3+30×3+150×3+290×2+390×1', gift:1555
+  },
 ];
