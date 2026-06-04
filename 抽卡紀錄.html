@@ -71,9 +71,15 @@
             border-radius:14px; padding:18px 14px; text-align:center;
             transition: transform .2s;
             display:flex; flex-direction:column; align-items:center; justify-content:center;
-            overflow:visible;
+            overflow:visible; position:relative;
+        }
+        .stat-box::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity:0; transition: opacity .3s;
         }
         .stat-box:hover { transform:translateY(-2px); }
+        .stat-box:hover::before { opacity:1; }
         .stat-box .label { font-size:.75em; color:var(--text-dim); margin-bottom:6px; letter-spacing:1px; }
         .stat-box .val { font-size:1.5em; font-weight:800; }
         .stat-box .note { font-size:.7em; color:var(--text-dim); margin-top:4px; white-space:nowrap; }
@@ -85,8 +91,8 @@
             font-size:1.25em; font-weight:700; color:var(--accent);
             margin-bottom:18px; margin-top:12px; padding:10px 16px;
             border-left:4px solid var(--accent);
-            /* background:rgba(167,139,250,.06); */
-            background:rgba(22,20,50,.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+            background: linear-gradient(90deg, rgba(167,139,250,.06), transparent);
+            backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
             border-radius:0 8px 8px 0;
             cursor:pointer; user-select:none;
             letter-spacing:2px;
@@ -894,7 +900,7 @@ function render(){
             if(p.box) notes.push('開盒子');
             if(p.extra) notes.push('額外');
             let diaClass = p.dia===0?'c-green':'c-red';
-            let rowStyle = p.std ? 'background:rgba(255,255,255,.02);border-left:3px solid rgba(255,255,255,.15)' : 'border-left:3px solid var(--accent)';
+            let rowStyle = p.std ? 'border-left:4px solid rgba(255,255,255,.1)' : 'background:rgba(167,139,250,.035);border-left:4px solid var(--accent)';
             let nameStyle = p.std ? 'color:var(--text-dim)' : '';
             h += `<tr style="${rowStyle}">
                 <td>${pi+1}</td>
