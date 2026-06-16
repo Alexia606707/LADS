@@ -858,6 +858,16 @@ const purchases = [
   {date:'2026/5/30 22:06:06', category:'卡池禮包', name:'軟茸饋禮。四', amount:290},
   {date:'2026/5/30 22:06:50', category:'卡池禮包', name:'軟茸饋禮。四', amount:290},
   {date:'2026/5/30 22:14:23', category:'卡池禮包', name:'軟茸饋禮。五', amount:390},
+  {date:'2026/6/14 23:32:38', category:'卡池禮包', name:'予晝同暉禮。一', amount:15},
+  {date:'2026/6/14 23:33:16', category:'卡池禮包', name:'予晝同暉禮。一', amount:15},
+  {date:'2026/6/14 23:33:46', category:'卡池禮包', name:'予晝同暉禮。一', amount:15},
+  {date:'2026/6/14 23:34:27', category:'卡池禮包', name:'予晝同暉禮。二', amount:30},
+  {date:'2026/6/14 23:35:02', category:'卡池禮包', name:'予晝同暉禮。二', amount:30},
+  {date:'2026/6/14 23:35:39', category:'卡池禮包', name:'予晝同暉禮。二', amount:30},
+  {date:'2026/6/14 23:37:28', category:'卡池禮包', name:'予晝同暉禮。三', amount:150},
+  {date:'2026/6/14 23:38:02', category:'卡池禮包', name:'予晝同暉禮。三', amount:150},
+  {date:'2026/6/14 23:39:43', category:'卡池禮包', name:'予晝同暉禮。三', amount:150},
+  {date:'2026/6/14 23:41:20', category:'卡池禮包', name:'予晝同暉禮。四', amount:290},
 ];
 
 const banners = [
@@ -1147,5 +1157,13 @@ const banners = [
       {n:'秦徹·愛貓及喵',icon:'🐦‍⬛',at:80,dia:900},
     ],
     giftFormula:'15×3+30×3+150×3+290×2+390×1', gift:1555
+  },
+  {
+    date:'2026/6/8-6/15', name:'萬里皆予你', tag:'哥生日卡', type:'生日卡',
+    cards:['夏以晝·萬里皆予你'],
+    pulls:[
+      {n:'夏以晝·萬里皆予你',icon:'🍎',at:60,dia:150},
+    ],
+    giftFormula:'15×3+30×3+150×3+290×1', gift:875
   },
 ];
