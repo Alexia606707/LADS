@@ -138,6 +138,14 @@
             box-shadow:0 2px 15px rgba(167,139,250,.05);
         }
         .section-title .arrow { margin-left:auto; }
+        /* 區塊標題旁的筆數徽章 */
+        .section-title .badge-count {
+            margin-left:10px; font-size:.7em; padding:2px 10px;
+            background:rgba(251,191,36,.15); border:1px solid rgba(251,191,36,.3);
+            border-radius:12px; color:var(--yellow); font-weight:400;
+            letter-spacing:1px; white-space:nowrap;
+            box-shadow:0 0 8px rgba(251,191,36,.15);
+        }
 
         /* ===== 圖表 ===== */
         .chart-wrap {
@@ -538,12 +546,12 @@
 <div class="toast" id="toast"></div>
 
 <!-- 載入外部資料檔（加時間戳防止手機瀏覽器快取舊資料） -->
-<script>document.write('<script src="data.js?' + Date.now() + '"><\/script>');</script>
+<script>document.write('<script src="LADS_data.js?' + Date.now() + '"><\/script>');</script>
 <script>
 // ============================
-// 資料定義已移至 data.js
+// 資料定義已移至 LADS_data.js
 // 新增卡池請使用 admin.html 管理後台
-// 或直接編輯 data.js
+// 或直接編輯 LADS_data.js
 // ============================
 
 // ============================
@@ -1198,7 +1206,80 @@ var pFilterCat = 'all';   // 分類篩選：'all' / '月卡' / '密約' / ...
 var pDateFrom = '', pDateTo = '';  // 自訂日期範圍
 var pChartMonthly = null, pChartPie = null;
 // 記住各區塊展開/收合狀態（true=展開）
-var pSecState = {'stats':true, 'chart':true, 'monthly':true, 'detail':false};
+var pSecState = {'stats':true, 'chart':true, 'monthly':true, 'detail':true};
+// 每月明細／課金明細：每次顯示筆數（預設 10，按「顯示更多」再往下加 10）
+var P_PAGE = 10;
+var pMonthShown = P_PAGE;   // 每月明細目前顯示的月份數
+var pDetailShown = P_PAGE;  // 課金明細目前顯示的筆數
+
+// 收合後捲回該區塊標題（扣掉 sticky 篩選列的高度，避免被蓋住）
+function pScrollToSection(bodyId){
+    var el = document.getElementById(bodyId);
+    if(!el) return;
+    var sec = el.closest('.section');
+    if(!sec) return;
+    var bar = document.getElementById('purchaseFilterBar');
+    var offset = bar ? bar.offsetHeight + 8 : 0;
+    window.scrollTo({top: sec.getBoundingClientRect().top + window.pageYOffset - offset, behavior:'smooth'});
+}
+
+// ============================
+// 每月明細：展開 / 收合（資料已依上方篩選分類過，這裡只控制顯示筆數）
+// ============================
+function showMorePMonthly(){
+    var rows = document.querySelectorAll('#pMonthlyBody .pm-row');
+    pMonthShown = Math.min(pMonthShown + P_PAGE, rows.length);
+    applyPMonthlyShown(rows);
+}
+
+function collapsePMonthly(){
+    var rows = document.querySelectorAll('#pMonthlyBody .pm-row');
+    pMonthShown = P_PAGE;
+    applyPMonthlyShown(rows);
+    pScrollToSection('pMonthlyBody');
+}
+
+function applyPMonthlyShown(rows){
+    rows.forEach(function(row){
+        row.style.display = parseInt(row.dataset.pmIdx) < pMonthShown ? '' : 'none';
+    });
+    var wrap = document.getElementById('pmMoreWrap');
+    if(!wrap) return;
+    var left = rows.length - pMonthShown;
+    var b = '';
+    if(left > 0) b += '<button class="btn btn-accent" onclick="showMorePMonthly()">顯示更多（還有 '+left+' 個月）</button>';
+    if(pMonthShown > P_PAGE) b += ' <button class="btn" onclick="collapsePMonthly()">收合</button>';
+    wrap.innerHTML = b;
+}
+
+// ============================
+// 課金明細：展開 / 收合
+// ============================
+function showMorePDetail(){
+    var rows = document.querySelectorAll('#pDetailBody .pd-row');
+    pDetailShown = Math.min(pDetailShown + P_PAGE, rows.length);
+    applyPDetailShown(rows);
+}
+
+function collapsePDetail(){
+    var rows = document.querySelectorAll('#pDetailBody .pd-row');
+    pDetailShown = P_PAGE;
+    applyPDetailShown(rows);
+    pScrollToSection('pDetailBody');
+}
+
+function applyPDetailShown(rows){
+    rows.forEach(function(row){
+        row.style.display = parseInt(row.dataset.pdIdx) < pDetailShown ? '' : 'none';
+    });
+    var wrap = document.getElementById('pdMoreWrap');
+    if(!wrap) return;
+    var left = rows.length - pDetailShown;
+    var b = '';
+    if(left > 0) b += '<button class="btn btn-accent" onclick="showMorePDetail()">顯示更多（還有 '+left+' 筆）</button>';
+    if(pDetailShown > P_PAGE) b += ' <button class="btn" onclick="collapsePDetail()">收合</button>';
+    wrap.innerHTML = b;
+}
 
 function renderPurchaseTab(timeFilter, catFilter){
     if(timeFilter !== undefined) pFilterTime = timeFilter;
@@ -1206,8 +1287,12 @@ function renderPurchaseTab(timeFilter, catFilter){
     var container = document.getElementById('purchaseTabContent');
     if(!container) return;
 
+    // 重新渲染（切換篩選/分類）時，明細顯示筆數回到預設 10 筆
+    pMonthShown = P_PAGE;
+    pDetailShown = P_PAGE;
+
     if(typeof purchases === 'undefined' || purchases.length === 0){
-        container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-dim)"><div style="font-size:2em;margin-bottom:12px">💰</div><div style="font-size:1.1em">尚無課金紀錄</div><div style="font-size:.85em;margin-top:8px">請至管理後台新增課金紀錄，或直接編輯 data.js</div></div>';
+        container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-dim)"><div style="font-size:2em;margin-bottom:12px">💰</div><div style="font-size:1.1em">尚無課金紀錄</div><div style="font-size:.85em;margin-top:8px">請至管理後台新增課金紀錄，或直接編輯 LADS_data.js</div></div>';
         return;
     }
 
@@ -1387,45 +1472,56 @@ function renderPurchaseTab(timeFilter, catFilter){
 
     // === 📋 每月明細 ===
     if(pMonthKeys.length > 0 && pCatUsed.length > 0){
-        h += '<div class="section"><div class="section-title" onclick="togglePSec(this,\'monthly\')" style="border-left-color:var(--yellow)">📋 每月明細<span class="arrow" style="font-size:.7em">'+(pSecState.monthly?'▼':'▶')+'</span></div><div class="sec-body"'+(pSecState.monthly?'':' style="display:none"')+'>';
+        // 表格由新到舊（圖表仍沿用升冪的 pMonthKeys）
+        var pMonthKeysDesc = pMonthKeys.slice().reverse();
+        h += '<div class="section"><div class="section-title" onclick="togglePSec(this,\'monthly\')" style="border-left-color:var(--yellow)">📋 每月明細（由新到舊）<span class="badge-count">'+pMonthKeysDesc.length+' 個月</span><span class="arrow" style="font-size:.7em">'+(pSecState.monthly?'▼':'▶')+'</span></div><div class="sec-body"'+(pSecState.monthly?'':' style="display:none"')+'>';
         h += '<table class="rank-tbl"><thead><tr><th>月份</th>';
         pCatUsed.forEach(function(cat){ h += '<th style="color:'+pCatColors[cat]+'">'+cat+'</th>'; });
-        h += '<th>合計</th></tr></thead><tbody>';
-        pMonthKeys.forEach(function(ym){
-            h += '<tr><td>'+ym+'</td>';
+        h += '<th>合計</th></tr></thead><tbody id="pMonthlyBody">';
+        // 合計列放最上面，且不受顯示筆數影響，永遠是「目前篩選條件」的全部加總
+        if(pMonthKeysDesc.length > 1){
+            h += '<tr style="border-bottom:2px solid var(--border);font-weight:700"><td style="color:var(--yellow)">合計</td>';
+            pCatUsed.forEach(function(cat){
+                h += '<td style="color:'+pCatColors[cat]+'">'+pCategoryMap[cat].toLocaleString()+'</td>';
+            });
+            h += '<td class="c-yellow">'+pTotal.toLocaleString()+'</td></tr>';
+        }
+        pMonthKeysDesc.forEach(function(ym, mi){
+            h += '<tr class="pm-row" data-pm-idx="'+mi+'"'+(mi >= P_PAGE ? ' style="display:none"' : '')+'><td>'+ym+'</td>';
             pCatUsed.forEach(function(cat){
                 var val = pMonthMap[ym][cat] || 0;
                 h += '<td>'+(val > 0 ? val.toLocaleString() : '<span class="c-dim">-</span>')+'</td>';
             });
             h += '<td class="c-yellow" style="font-weight:700">'+pMonthMap[ym].total.toLocaleString()+'</td></tr>';
         });
-        if(pMonthKeys.length > 1){
-            h += '<tr style="border-top:2px solid var(--border);font-weight:700"><td style="color:var(--yellow)">合計</td>';
-            pCatUsed.forEach(function(cat){
-                h += '<td style="color:'+pCatColors[cat]+'">'+pCategoryMap[cat].toLocaleString()+'</td>';
-            });
-            h += '<td class="c-yellow">'+pTotal.toLocaleString()+'</td></tr>';
-        }
         h += '</tbody></table>';
+        if(pMonthKeysDesc.length > P_PAGE){
+            h += '<div id="pmMoreWrap" style="text-align:center;margin-top:12px"><button class="btn btn-accent" onclick="showMorePMonthly()">顯示更多（還有 '+(pMonthKeysDesc.length - P_PAGE)+' 個月）</button></div>';
+        }
         h += '</div></div>';
     }
 
     // === 📝 課金明細 ===
-    h += '<div class="section"><div class="section-title" onclick="togglePSec(this,\'detail\')" style="border-left-color:var(--yellow)">📝 課金明細（由新到舊）<span class="arrow" style="font-size:.7em">'+(pSecState.detail?'▼':'▶')+'</span></div><div class="sec-body"'+(pSecState.detail?'':' style="display:none"')+'>';
-    h += '<table class="rank-tbl"><thead><tr><th style="width:18%">日期</th><th style="width:16%">分類</th><th style="width:30%;text-align:left">名稱</th><th style="width:16%">金額</th><th style="width:20%;text-align:left">備註</th></tr></thead><tbody>';
+    h += '<div class="section"><div class="section-title" onclick="togglePSec(this,\'detail\')" style="border-left-color:var(--yellow)">📝 課金明細（由新到舊）<span class="badge-count">'+filtered.length+' 筆</span><span class="arrow" style="font-size:.7em">'+(pSecState.detail?'▼':'▶')+'</span></div><div class="sec-body"'+(pSecState.detail?'':' style="display:none"')+'>';
+    h += '<table class="rank-tbl"><thead><tr><th style="width:18%">日期</th><th style="width:16%">分類</th><th style="width:30%;text-align:left">名稱</th><th style="width:16%">金額</th><th style="width:20%;text-align:left">備註</th></tr></thead><tbody id="pDetailBody">';
+    var pdIdx = 0;
     for(var pi = filtered.length - 1; pi >= 0; pi--){
         var p = filtered[pi];
         var catColor = pCatColors[p.category] || 'var(--dim)';
-        h += '<tr><td class="c-dim">'+p.date+'</td>';
+        h += '<tr class="pd-row" data-pd-idx="'+pdIdx+'"'+(pdIdx >= P_PAGE ? ' style="display:none"' : '')+'><td class="c-dim">'+p.date+'</td>';
         h += '<td><span style="color:'+catColor+'">'+p.category+'</span></td>';
         h += '<td style="text-align:left">'+p.name+'</td>';
         h += '<td class="c-yellow" style="font-weight:700">'+p.amount.toLocaleString()+'</td>';
         h += '<td class="c-dim" style="text-align:left">'+(p.note||'')+'</td></tr>';
+        pdIdx++;
     }
     if(filtered.length === 0){
         h += '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:20px">此篩選條件下無資料</td></tr>';
     }
     h += '</tbody></table>';
+    if(filtered.length > P_PAGE){
+        h += '<div id="pdMoreWrap" style="text-align:center;margin-top:12px"><button class="btn btn-accent" onclick="showMorePDetail()">顯示更多（還有 '+(filtered.length - P_PAGE)+' 筆）</button></div>';
+    }
     h += '</div></div>';
 
     // 記住篩選列各行的滾動位置
@@ -1899,14 +1995,14 @@ function initAdminPanel(){
     // 操作按鈕
     adminHTML += '<div class="btn-row" style="margin-top:20px;justify-content:center">';
     adminHTML += '<button class="btn btn-green" onclick="generateCode()" style="font-size:1em;padding:10px 30px">產生程式碼</button>';
-    adminHTML += '<button class="btn btn-accent" onclick="saveToData()" style="font-size:1em;padding:10px 30px">儲存到 data.js</button>';
+    adminHTML += '<button class="btn btn-accent" onclick="saveToData()" style="font-size:1em;padding:10px 30px">儲存到 LADS_data.js</button>';
     adminHTML += '<button class="btn btn-danger" onclick="clearForm()">清空表單</button>';
     adminHTML += '</div></div>';
 
     // 程式碼預覽
     adminHTML += '<div class="form-section" id="previewSection" style="display:none"><h2>產生的程式碼</h2>';
     adminHTML += '<div class="preview-box" id="previewBox" style="position:relative"><button class="copy-btn" onclick="copyCode()">複製</button><pre id="codeOutput"></pre></div>';
-    adminHTML += '<p style="color:var(--text-dim);font-size:.78em;margin-top:10px">可以直接複製這段程式碼，貼到 data.js 的 banners 陣列最後面（ ]; 之前）。<br>或點「儲存到 data.js」自動附加。</p></div>';
+    adminHTML += '<p style="color:var(--text-dim);font-size:.78em;margin-top:10px">可以直接複製這段程式碼，貼到 LADS_data.js 的 banners 陣列最後面（ ]; 之前）。<br>或點「儲存到 LADS_data.js」自動附加。</p></div>';
 
     adminHTML += '</div>'; // 關閉 adminTabBanner
 
@@ -1924,14 +2020,14 @@ function initAdminPanel(){
     // 課金操作按鈕
     adminHTML += '<div class="btn-row" style="margin-top:20px;justify-content:center">';
     adminHTML += '<button class="btn btn-green" onclick="generatePurchaseCode()" style="font-size:1em;padding:10px 30px">產生程式碼</button>';
-    adminHTML += '<button class="btn btn-accent" onclick="savePurchaseToData()" style="font-size:1em;padding:10px 30px">儲存到 data.js</button>';
+    adminHTML += '<button class="btn btn-accent" onclick="savePurchaseToData()" style="font-size:1em;padding:10px 30px">儲存到 LADS_data.js</button>';
     adminHTML += '<button class="btn btn-danger" onclick="clearPurchaseForm()">清空表單</button>';
     adminHTML += '</div></div>';
 
     // 課金程式碼預覽
     adminHTML += '<div class="form-section" id="purchasePreviewSection" style="display:none"><h2 style="color:var(--yellow)">產生的程式碼</h2>';
     adminHTML += '<div class="preview-box" id="purchasePreviewBox" style="position:relative"><button class="copy-btn" onclick="copyPurchaseCode()" style="border-color:var(--yellow);color:var(--yellow)">複製</button><pre id="purchaseCodeOutput" style="color:#fde68a"></pre></div>';
-    adminHTML += '<p style="color:var(--text-dim);font-size:.78em;margin-top:10px">可以直接複製這段程式碼，貼到 data.js 的 purchases 陣列最後面（ ]; 之前）。<br>或點「儲存到 data.js」自動附加。</p></div>';
+    adminHTML += '<p style="color:var(--text-dim);font-size:.78em;margin-top:10px">可以直接複製這段程式碼，貼到 LADS_data.js 的 purchases 陣列最後面（ ]; 之前）。<br>或點「儲存到 LADS_data.js」自動附加。</p></div>';
 
     adminHTML += '</div>'; // 關閉 adminTabPurchase
     adminHTML += '</div>'; // 關閉 adminMainPanel
@@ -2590,27 +2686,27 @@ function generateCode(){
 }
 
 // ============================
-// 管理後台：儲存到 data.js
+// 管理後台：儲存到 LADS_data.js
 // ============================
 async function saveToData(){
     var obj = buildBannerObj();
     if(!obj) return;
     var code = objToCode(obj);
     try {
-        var resp = await fetch('data.js?' + Date.now());
+        var resp = await fetch('LADS_data.js?' + Date.now());
         var content = await resp.text();
         var lastBracket = content.lastIndexOf('];');
-        if(lastBracket === -1){ showToast('data.js 格式異常，找不到 ];', true); return; }
+        if(lastBracket === -1){ showToast('LADS_data.js 格式異常，找不到 ];', true); return; }
         var newContent = content.substring(0, lastBracket) + code + '\n' + content.substring(lastBracket);
         var blob = new Blob([newContent], {type:'text/javascript;charset=utf-8'});
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'data.js';
+        a.download = 'LADS_data.js';
         a.click();
         URL.revokeObjectURL(a.href);
-        showToast('已下載更新後的 data.js，請替換原檔案');
+        showToast('已下載更新後的 LADS_data.js，請替換原檔案');
     } catch(e){
-        showToast('將以下載方式提供更新的 data.js');
+        showToast('將以下載方式提供更新的 LADS_data.js');
         document.getElementById('codeOutput').textContent = code;
         document.getElementById('previewSection').style.display = 'block';
         document.getElementById('previewSection').scrollIntoView({behavior:'smooth'});
@@ -2952,23 +3048,23 @@ async function savePurchaseToData(){
     if(!objs) return;
     var code = objs.map(function(o){ return purchaseObjToCode(o); }).join('\n');
     try {
-        var resp = await fetch('data.js?' + Date.now());
+        var resp = await fetch('LADS_data.js?' + Date.now());
         var content = await resp.text();
         var purchasesStart = content.indexOf('const purchases');
-        if(purchasesStart === -1){ showToast('data.js 中找不到 purchases 陣列', true); return; }
+        if(purchasesStart === -1){ showToast('LADS_data.js 中找不到 purchases 陣列', true); return; }
         var searchFrom = content.indexOf('[', purchasesStart);
         var bracketEnd = content.indexOf('];', searchFrom);
-        if(bracketEnd === -1){ showToast('data.js 格式異常，找不到 purchases 的 ];', true); return; }
+        if(bracketEnd === -1){ showToast('LADS_data.js 格式異常，找不到 purchases 的 ];', true); return; }
         var newContent = content.substring(0, bracketEnd) + code + '\n' + content.substring(bracketEnd);
         var blob = new Blob([newContent], {type:'text/javascript;charset=utf-8'});
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'data.js';
+        a.download = 'LADS_data.js';
         a.click();
         URL.revokeObjectURL(a.href);
-        showToast('已下載更新後的 data.js（共 '+objs.length+' 筆），請替換原檔案');
+        showToast('已下載更新後的 LADS_data.js（共 '+objs.length+' 筆），請替換原檔案');
     } catch(e){
-        showToast('將以下載方式提供更新的 data.js');
+        showToast('將以下載方式提供更新的 LADS_data.js');
         document.getElementById('purchaseCodeOutput').textContent = code;
         document.getElementById('purchasePreviewSection').style.display = 'block';
         document.getElementById('purchasePreviewSection').scrollIntoView({behavior:'smooth'});
